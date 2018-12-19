@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:thingstodo/theme/colors.dart';
 import 'package:thingstodo/data/model/models.dart';
 import 'package:thingstodo/redux/app/app_state.dart';
+import 'package:thingstodo/ui/widget/show_snack_bar.dart';
 import 'package:thingstodo/ui/widget/builder/dismissible_background.dart';
 
 import 'task_vm.dart';
@@ -15,7 +16,52 @@ class TaskItem extends StatelessWidget {
 
   final TaskModel task;
 
+  onTaskDismissed(direction, context, vm) {
+    TaskStatus updates;
+    Color snackbarColor;
+    Text snackbarContent;
+
+    switch(direction) {
+      case DismissDirection.startToEnd:
+        snackbarContent = Text('Mark as Done');
+        snackbarColor = kSuccessColor;
+        updates = TaskStatus.done;
+        break;
+      case DismissDirection.endToStart:
+        snackbarContent = Text('Mark as Later');
+        snackbarColor = kErrorColor;
+        updates = TaskStatus.later;
+        break;
+    }
+
+    showSnackBar(
+      context: context,
+      content: snackbarContent,
+      backgroudColor: snackbarColor,
+    );
+    vm.updateTask(task, task.rebuild((b) => b
+      ..status = updates
+    ));
+  }
+
+  onTaskStarPressed(vm) {
+    vm.updateTask(task, task.rebuild((b) => b
+      ..important = !task.important
+    ));
+  }
+
+  onTaskPressed() {
+    print('pressed');
+  }
+
   Widget build(BuildContext context) {
+    // Store connector
+    final connector = (builder) => StoreConnector<AppState, TaskVM>(
+      converter: TaskVM.fromStore,
+      builder: builder
+    );
+
+    // Dismissible background
     final Widget background = (
       DismissibleBackground(
         text: 'Done',
@@ -25,6 +71,7 @@ class TaskItem extends StatelessWidget {
       )
     );
 
+    // Dismissible secondary background
     final Widget secondaryBackground = (
       DismissibleBackground(
         text: 'Later',
@@ -34,12 +81,6 @@ class TaskItem extends StatelessWidget {
       )
     );
 
-    final connector = (builder) => StoreConnector<AppState, TaskVM>(
-      converter: TaskVM.fromStore,
-      rebuildOnChange: false,
-      builder: builder
-    );
-
     return connector(
       (BuildContext context, TaskVM vm) {
         return Dismissible(
@@ -47,25 +88,91 @@ class TaskItem extends StatelessWidget {
           background: background,
           secondaryBackground: secondaryBackground,
           onDismissed: (direction) {
-            if (direction == DismissDirection.startToEnd) {
-              return vm.removeTask(task);
-            }
-            return vm.removeTask(task);
+            onTaskDismissed(direction, context, vm);
           },
-          child: ListTile(
-            subtitle: Text('Family'),
-            title: Text('Jalan - jalan'),
-            leading: Text('ni'),
-            trailing: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                Icon(FontAwesomeIcons.star, size: 20),
-                Icon(FontAwesomeIcons.star, size: 20),
-              ],
-            )
-          ),
+          child: InkWell(
+            onTap: onTaskPressed,
+            child: Container(
+              decoration: BoxDecoration(border: Border(
+                bottom: BorderSide(color: Colors.grey.shade300)
+              )),
+              child: buildListTile(vm)
+            ),
+          )
         );
       }
+    );
+  }
+
+  Widget buildListTile(vm) {
+    Color iconColor(priority) {
+      switch (priority) {
+        case TaskPriority.p1: return kSuccessColor;
+        case TaskPriority.p2: return kInfoColor;
+        case TaskPriority.p3: return kWarningColor;
+        case TaskPriority.p4: return kErrorColor;
+        default: return kSuccessColor;
+      }
+    };
+
+    // Priority Icon
+    final priorityIcon = Padding(
+      padding: EdgeInsets.only(left: 10),
+      child: Icon(
+        FontAwesomeIcons.solidCircle,
+        size: 20,
+        color: iconColor(task.priority),
+      ),
+    );
+
+    // Star Button Icon
+    final starIcon = IconButton(
+      icon: Icon(
+        (task.important
+          ? FontAwesomeIcons.solidStar
+          : FontAwesomeIcons.star
+        ),
+        size: 20,
+        color: task.important ? Colors.yellow : Colors.grey,
+      ),
+      onPressed: () { onTaskStarPressed(vm); }
+    );
+
+    DateTime taskDate = task.date.toLocal();
+    String time = new DateFormat('hh:mm').format(taskDate);
+    String amPm = new DateFormat('a').format(taskDate);
+    TextStyle textStyle = TextStyle(height: 1.3, color: Colors.grey.shade900);
+
+    final dateTime = RichText(
+      textAlign: TextAlign.center,
+      text: TextSpan(
+        children: <TextSpan>[
+          TextSpan(
+            text: '$time\n',
+            style: textStyle,
+          ),
+          TextSpan(
+            text: amPm,
+            style: textStyle.copyWith(
+              fontWeight: FontWeight.bold
+            ),
+          )
+        ]
+      ),
+    );
+
+    // List Tile
+    return ListTile(
+      subtitle: Text('Uncategorized'),
+      title: Text(task.title),
+      leading: dateTime,
+      trailing: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          starIcon,
+          priorityIcon
+        ],
+      )
     );
   }
 }

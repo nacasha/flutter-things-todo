@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:thingstodo/ui/task/task_form_page.dart';
+
 import '../search_bar.dart';
 
 /// [BaseAppBar] contains all default values and default builder
@@ -18,16 +20,24 @@ class BaseAppBar {
   );
 
   /// [Default actions] for App Bar
-  static Map<String, Widget> get actions => <String, Widget>{
+  static Map<String, Widget> actions(context) => <String, Widget>{
     'notification': _buildActionButton(
       icon: Icons.notifications,
       tooltip: 'Notifications',
-      onPressed: () {}
+      onPressed: () {
+        Navigator.of(context).pushNamed('/task-form');
+      }
     ),
     'add': _buildActionButton(
       icon: Icons.add,
       tooltip: 'Add new Task',
-      onPressed: () {}
+      onPressed: () {
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (ctx) => TaskFormPage(previousContext: context),
+          ),
+        );
+      }
     )
   };
 

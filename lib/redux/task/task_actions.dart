@@ -10,9 +10,11 @@ class CreateTaskAction {
 
 class UpdateTaskAction {
   final TaskModel task;
+  final TaskModel updates;
 
   UpdateTaskAction({
-    this.task
+    this.task,
+    this.updates
   });
 }
 

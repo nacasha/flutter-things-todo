@@ -42,6 +42,6 @@ class MyAppBar extends AppBar {
 
   @override
   List<Widget> get actions => actionButtons.map(
-    (action) => BaseAppBar.actions[action]
+    (action) => BaseAppBar.actions(context)[action]
   ).toList();
 }

@@ -18,8 +18,9 @@ class MySliverAppBar extends SliverAppBar {
     this.expandedHeight,
     this.title = BaseAppBar.defaultTitle,
     this.flexibleSpace = defaultFlexibleSpace,
-    this.pinned = true,
-    this.floating = true,
+    this.pinned = false,
+    this.snap = false,
+    this.floating = false,
     this.forceElevated = false,
     this.actionButtons = BaseAppBar.defaultActions,
   }) : assert(context != null, 'Provide context params to MySliverAppBar'),
@@ -30,6 +31,8 @@ class MySliverAppBar extends SliverAppBar {
   final bool forceElevated;
   final bool pinned;
   final bool floating;
+  final bool snap;
+  final bool primary = true;
   final Widget flexibleSpace;
   final PreferredSizeWidget bottom;
   final double expandedHeight;
@@ -39,6 +42,6 @@ class MySliverAppBar extends SliverAppBar {
 
   @override
   List<Widget> get actions => actionButtons.map(
-    (action) => BaseAppBar.actions[action]
+    (action) => BaseAppBar.actions(context)[action]
   ).toList();
 }

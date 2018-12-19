@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-import 'package:thingstodo/ui/widget/search_bar.dart';
-import 'package:thingstodo/ui/widget/app_bar/my_sliver_app_bar.dart';
-
 import 'package:thingstodo/ui/task/tab_view/daily_task.dart';
 import 'package:thingstodo/ui/task/tab_view/monthly_task.dart';
 import 'package:thingstodo/ui/task/tab_view/weekly_task.dart';
+import 'package:thingstodo/ui/widget/search_bar.dart';
+import 'package:thingstodo/ui/widget/app_bar/my_sliver_app_bar.dart';
+import 'package:thingstodo/ui/widget/app_bar/my_app_bar.dart';
 
 class HomePage extends StatefulWidget {
   static final String route = '/';
@@ -15,9 +15,11 @@ class HomePage extends StatefulWidget {
 }
 
 class HomePageState extends State<HomePage> {
+  GlobalKey homeScaffold = GlobalKey<HomePageState>();
+
   @override
   Widget build(BuildContext context) {
-    /// [SearchBar]
+    // SearchBar
     final searchBar = FlexibleSpaceBar(
       collapseMode: CollapseMode.pin,
       background: Padding(
@@ -26,7 +28,7 @@ class HomePageState extends State<HomePage> {
       )
     );
 
-    /// [TabBar]
+    // TabBar
     final tabBar = TabBar(
       indicatorColor: Colors.white,
       indicatorWeight: 3,
@@ -37,12 +39,12 @@ class HomePageState extends State<HomePage> {
       ],
     );
 
-    /// [Absorber handler]
+    // Absorber handler
     final handle = (context) {
       return NestedScrollView.sliverOverlapAbsorberHandleFor(context);
     };
 
-    /// [TabBar View Builder]
+    // TabBar View Builder
     final tabbarViewBuilder = (view) => SafeArea(
       top: false,
       bottom: false,
@@ -53,9 +55,11 @@ class HomePageState extends State<HomePage> {
       ),
     );
 
+    // build
     return DefaultTabController(
       length: 3,
       child: Scaffold(
+        key: homeScaffold,
         body: NestedScrollView(
           headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
             return <Widget>[
@@ -64,7 +68,8 @@ class HomePageState extends State<HomePage> {
                 child: MySliverAppBar(
                   context: context,
                   expandedHeight: 165,
-                  floating: false,
+                  pinned: true,
+                  snap: true,
                   forceElevated: innerBoxIsScrolled,
                   flexibleSpace: searchBar,
                   bottom: tabBar

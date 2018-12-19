@@ -22,6 +22,8 @@ final ThemeData theme = ThemeData(
 
   // Define the default InputDecorator Theme
   inputDecorationTheme: InputDecorationTheme(
+    filled: true,
+    fillColor: Colors.white,
     hintStyle: TextStyle(
       color: Colors.grey,
       fontSize: 14,
@@ -29,12 +31,14 @@ final ThemeData theme = ThemeData(
     labelStyle: TextStyle(
       color: Colors.grey.shade600
     ),
-    filled: true,
+    errorStyle: TextStyle(
+      height: 0.5,
+      color: Colors.red,
+    ),
     contentPadding: EdgeInsets.symmetric(
       horizontal: 15,
       vertical: 10
     ),
-    fillColor: Colors.white,
     border: UnderlineInputBorder(
       borderSide: BorderSide(color: Colors.grey.shade300),
       borderRadius: BorderRadius.circular(0),

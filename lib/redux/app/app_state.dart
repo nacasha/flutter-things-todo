@@ -16,8 +16,9 @@ abstract class AppState implements Built<AppState, AppStateBuilder> {
   AppState._();
   factory AppState([updates(AppStateBuilder b)]) = _$AppState;
 
-  static filterStateForSave(_$AppState state) => (
+  static filterPersistedState(_$AppState state) => (
     state.rebuild((b) => b
+      // ..task = TaskState().toBuilder()
     )
   );
 }

@@ -18,13 +18,11 @@ TaskState createTaskAction(TaskState state, CreateTaskAction action) {
 }
 
 TaskState updateTaskAction(TaskState state, UpdateTaskAction action) {
-  state.rebuild((b) => b
-    ..tasks.where((TaskModel task) {
-        return task.taskId == action.task.taskId;
-    })
-  );
+  int taskIndex = state.tasks.indexOf(action.task);
 
-  return state;
+  return state.rebuild((state) =>
+    state.tasks.replaceRange(taskIndex, taskIndex + 1, [action.updates])
+  );
 }
 
 TaskState removeTaskAction(TaskState state, RemoveTaskAction action) {

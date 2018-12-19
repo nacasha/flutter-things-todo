@@ -14,6 +14,7 @@ abstract class TaskModel implements Built<TaskModel, TaskModelBuilder> {
   String get title;
   String get description;
   String get category;
+  bool get important;
   TaskStatus get status;
   TaskPriority get priority;
   DateTime get date;

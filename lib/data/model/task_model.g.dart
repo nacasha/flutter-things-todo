@@ -30,6 +30,9 @@ class _$TaskModelSerializer implements StructuredSerializer<TaskModel> {
       'category',
       serializers.serialize(object.category,
           specifiedType: const FullType(String)),
+      'important',
+      serializers.serialize(object.important,
+          specifiedType: const FullType(bool)),
       'status',
       serializers.serialize(object.status,
           specifiedType: const FullType(TaskStatus)),
@@ -71,6 +74,10 @@ class _$TaskModelSerializer implements StructuredSerializer<TaskModel> {
           result.category = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
           break;
+        case 'important':
+          result.important = serializers.deserialize(value,
+              specifiedType: const FullType(bool)) as bool;
+          break;
         case 'status':
           result.status = serializers.deserialize(value,
               specifiedType: const FullType(TaskStatus)) as TaskStatus;
@@ -100,6 +107,8 @@ class _$TaskModel extends TaskModel {
   @override
   final String category;
   @override
+  final bool important;
+  @override
   final TaskStatus status;
   @override
   final TaskPriority priority;
@@ -114,6 +123,7 @@ class _$TaskModel extends TaskModel {
       this.title,
       this.description,
       this.category,
+      this.important,
       this.status,
       this.priority,
       this.date})
@@ -129,6 +139,9 @@ class _$TaskModel extends TaskModel {
     }
     if (category == null) {
       throw new BuiltValueNullFieldError('TaskModel', 'category');
+    }
+    if (important == null) {
+      throw new BuiltValueNullFieldError('TaskModel', 'important');
     }
     if (status == null) {
       throw new BuiltValueNullFieldError('TaskModel', 'status');
@@ -156,6 +169,7 @@ class _$TaskModel extends TaskModel {
         title == other.title &&
         description == other.description &&
         category == other.category &&
+        important == other.important &&
         status == other.status &&
         priority == other.priority &&
         date == other.date;
@@ -167,9 +181,11 @@ class _$TaskModel extends TaskModel {
         $jc(
             $jc(
                 $jc(
-                    $jc($jc($jc(0, taskId.hashCode), title.hashCode),
-                        description.hashCode),
-                    category.hashCode),
+                    $jc(
+                        $jc($jc($jc(0, taskId.hashCode), title.hashCode),
+                            description.hashCode),
+                        category.hashCode),
+                    important.hashCode),
                 status.hashCode),
             priority.hashCode),
         date.hashCode));
@@ -182,6 +198,7 @@ class _$TaskModel extends TaskModel {
           ..add('title', title)
           ..add('description', description)
           ..add('category', category)
+          ..add('important', important)
           ..add('status', status)
           ..add('priority', priority)
           ..add('date', date))
@@ -208,6 +225,10 @@ class TaskModelBuilder implements Builder<TaskModel, TaskModelBuilder> {
   String get category => _$this._category;
   set category(String category) => _$this._category = category;
 
+  bool _important;
+  bool get important => _$this._important;
+  set important(bool important) => _$this._important = important;
+
   TaskStatus _status;
   TaskStatus get status => _$this._status;
   set status(TaskStatus status) => _$this._status = status;
@@ -228,6 +249,7 @@ class TaskModelBuilder implements Builder<TaskModel, TaskModelBuilder> {
       _title = _$v.title;
       _description = _$v.description;
       _category = _$v.category;
+      _important = _$v.important;
       _status = _$v.status;
       _priority = _$v.priority;
       _date = _$v.date;
@@ -257,6 +279,7 @@ class TaskModelBuilder implements Builder<TaskModel, TaskModelBuilder> {
             title: title,
             description: description,
             category: category,
+            important: important,
             status: status,
             priority: priority,
             date: date);

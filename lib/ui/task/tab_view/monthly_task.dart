@@ -4,6 +4,7 @@ import 'package:built_collection/built_collection.dart';
 
 import 'package:thingstodo/data/model/models.dart';
 import 'package:thingstodo/redux/app/app_state.dart';
+import 'package:thingstodo/ui/widget/inline_calendar.dart';
 
 import '../task_vm.dart';
 
@@ -20,43 +21,47 @@ class MonthlyTaskViewState extends State<MonthlyTaskView> {
       builder: builder
     );
 
+    final overlap = NestedScrollView.sliverOverlapAbsorberHandleFor(context);
+
     return connector(
       (BuildContext context, TaskVM vm) {
-        return CustomScrollView(
-          slivers: <Widget>[
-            SliverOverlapInjector(
-              handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context)
-            ),
-            SliverToBoxAdapter(
-              child: Container(
-                child: Column(
-                  children: <Widget>[
-                    Text(
-                      'You have clicke this many times'
-                    ),
-                    RaisedButton(
-                      onPressed: () {
-                        final taskId = DateTime.now().millisecondsSinceEpoch;
 
-                        vm.createTask(
-                          TaskModel((b) => b
-                            ..taskId = '$taskId'
-                            ..title = 'Jalan - jalan'
-                            ..description = 'Sama kinol'
-                            ..date = DateTime.now().toUtc()
-                            ..category = 'Family'
-                            ..status = TaskStatus.active
-                            ..priority = TaskPriority.p1
-                          )
-                        );
-                      },
-                      child: Text('Click me'),
-                    )
-                  ],
-                )
-              ),
-            )
-          ],
+        return Container(
+          margin: EdgeInsets.only(top: overlap.scrollExtent),
+          child: CustomScrollView(
+            slivers: <Widget>[
+              SliverToBoxAdapter(
+                child: Container(
+                  child: Column(
+                    children: <Widget>[
+                      Text(
+                        'You have clicke this many times'
+                      ),
+                      RaisedButton(
+                        onPressed: () {
+                          final taskId = DateTime.now().millisecondsSinceEpoch;
+
+                          vm.createTask(
+                            TaskModel((b) => b
+                              ..taskId = '$taskId'
+                              ..title = 'Jalan - jalan'
+                              ..description = 'Sama kinol'
+                              ..date = DateTime.now().toUtc()
+                              ..category = 'Family'
+                              ..status = TaskStatus.active
+                              ..priority = TaskPriority.p1
+                              ..important = false
+                            )
+                          );
+                        },
+                        child: Text('Click me'),
+                      )
+                    ],
+                  )
+                ),
+              )
+            ],
+          )
         );
       }
     );
