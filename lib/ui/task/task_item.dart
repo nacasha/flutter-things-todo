@@ -39,11 +39,10 @@ class TaskItem extends StatelessWidget {
       content: snackbarContent,
       backgroundColor: snackbarColor,
     );
-    vm.removeTask(task);
 
-    // vm.updateTask(task, task.rebuild((b) => b
-    //   ..status = updates
-    // ));
+    vm.updateTask(task, task.rebuild((b) => b
+      ..status = updates
+    ));
   }
 
   onTaskStarPressed(vm) {

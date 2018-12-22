@@ -13,8 +13,9 @@ class TaskVM {
   final List<TaskModel> taskLaterList;
   final List<TaskModel> taskDoneList;
 
-  final List<TaskModel> taskInMonth;
-  final List<TaskModel> taskInWeek;
+  final List<TaskModel> dailyTask;
+  final Map<String, List<TaskModel>> weeklyTask;
+  final List<TaskModel> monthlyTask;
 
   final Function createTask;
   final Function removeTask;
@@ -24,8 +25,9 @@ class TaskVM {
     @required this.taskActiveList,
     @required this.taskLaterList,
     @required this.taskDoneList,
-    @required this.taskInMonth,
-    @required this.taskInWeek,
+    @required this.dailyTask,
+    @required this.weeklyTask,
+    @required this.monthlyTask,
     @required this.createTask,
     @required this.removeTask,
     @required this.updateTask,
@@ -36,14 +38,14 @@ class TaskVM {
     final dispatch = store.dispatch;
 
     return TaskVM(
-      // State
       taskActiveList: TaskSelectors.taskActiveList(state),
       taskLaterList: TaskSelectors.taskLaterList(state),
       taskDoneList: TaskSelectors.taskDoneList(state),
-      taskInMonth: TaskSelectors.taskDoneList(state),
-      taskInWeek: TaskSelectors.taskDoneList(state),
 
-      // Methods
+      dailyTask: TaskSelectors.dailyTask(state),
+      weeklyTask: TaskSelectors.weeklyTask(state),
+      monthlyTask: TaskSelectors.monthlyTask(state),
+
       createTask: (TaskModel task) {
         dispatch(CreateTaskAction(task: task));
       },

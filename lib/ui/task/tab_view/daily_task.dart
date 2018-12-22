@@ -17,15 +17,17 @@ class DailyTaskView extends StatefulWidget {
 }
 
 class DailyTaskViewState extends State<DailyTaskView> {
-  Widget build(BuildContext context) {
-    final connector = (builder) => StoreConnector<AppState, TaskVM>(
+  Widget connector({ builder }) {
+    return StoreConnector<AppState, TaskVM>(
       converter: TaskVM.fromStore,
       builder: builder
     );
+  }
 
+  Widget build(BuildContext context) {
     return connector(
-      (BuildContext context, TaskVM vm) {
-        final tasks = vm.taskActiveList;
+      builder: (BuildContext context, TaskVM vm) {
+        final tasks = vm.dailyTask;
 
         return CustomScrollView(
           slivers: <Widget>[

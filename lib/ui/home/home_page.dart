@@ -7,6 +7,7 @@ import 'package:thingstodo/ui/task/tab_view/weekly_task.dart';
 import 'package:thingstodo/ui/widget/search_bar.dart';
 import 'package:thingstodo/ui/widget/app_bar/my_sliver_app_bar.dart';
 import 'package:thingstodo/ui/widget/show_snack_bar.dart';
+import 'package:thingstodo/ui/widget/my_drawer.dart';
 
 class HomePage extends StatefulWidget {
   static final String route = '/';
@@ -73,6 +74,9 @@ class HomePageState extends State<HomePage> with SingleTickerProviderStateMixin 
 
     // build
     return Scaffold(
+      drawer: Drawer(
+        child: MyDrawer(),
+      ),
       body: Builder(
         builder: (BuildContext context) {
           return CustomScrollView(
@@ -124,6 +128,7 @@ class HomePageState extends State<HomePage> with SingleTickerProviderStateMixin 
       context: context,
       pinned: true,
       bottom: tabBar,
+      titleSpacing: 0,
       forceElevated: isScrolled,
     );
   }

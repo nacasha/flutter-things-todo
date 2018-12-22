@@ -15,11 +15,6 @@ class StartupMiddleware extends MiddlewareClass<AppState>{
   }
 
   void startupAction(NextDispatcher next) {
-    next(SetCalendarAction(
-      date: DateTime.now()
-    ));
-    next(UpdateSelectedDateAction(
-      date: DateTime.now()
-    ));
+    next(CaledarInitialStateAction());
   }
 }

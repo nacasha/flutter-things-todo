@@ -12,14 +12,15 @@ class MySliverAppBar extends SliverAppBar {
     this.context,
     this.callback,
     this.bottom,
-    this.expandedHeight,
-    this.title = BaseAppBar.defaultTitle,
     this.flexibleSpace,
-    this.pinned = false,
+    this.expandedHeight,
     this.snap = false,
+    this.pinned = false,
     this.floating = false,
     this.forceElevated = false,
+    this.title = BaseAppBar.defaultTitle,
     this.actionButtons = BaseAppBar.defaultActions,
+    this.titleSpacing = NavigationToolbar.kMiddleSpacing,
   }) : assert(context != null, 'Provide context params to MySliverAppBar'),
        super(key: key);
 
@@ -30,6 +31,7 @@ class MySliverAppBar extends SliverAppBar {
   final bool floating;
   final bool snap;
   final bool primary = true;
+  final double titleSpacing;
   final Widget flexibleSpace;
   final PreferredSizeWidget bottom;
   final double expandedHeight;

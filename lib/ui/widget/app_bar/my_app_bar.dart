@@ -7,12 +7,12 @@ class MyAppBar extends AppBar {
     this.key,
     this.context,
     this.callback,
-    this.title = BaseAppBar.defaultTitle,
-    this.bottomBody = BaseAppBar.defaultBottom,
-    this.bottomHeight = 0,
     this.elevation = 4,
     this.pinned = true,
+    this.bottomHeight = 0,
     this.hideSearchBar = false,
+    this.bottomBody = BaseAppBar.defaultBottom,
+    this.title = BaseAppBar.defaultTitle,
     this.actionButtons = BaseAppBar.defaultActions,
   }) : assert(context != null, 'Provide context params to MyAppBar'),
        super(key: key);
@@ -24,14 +24,11 @@ class MyAppBar extends AppBar {
   final BuildContext context;
   final double bottomHeight;
   final double elevation;
+  final Function callback;
+  final List actionButtons;
   final Widget bottomBody;
   final Widget title;
-  final List actionButtons;
-  final Function callback;
 
-  /// [Must] override this when override [bottom]
-  ///
-  /// Copied from app_bar.dart line 161
   @override
   Size get preferredSize => BaseAppBar.preferredSize(bottom);
 

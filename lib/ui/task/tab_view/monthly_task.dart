@@ -14,15 +14,16 @@ class MonthlyTaskView extends StatefulWidget {
 }
 
 class MonthlyTaskViewState extends State<MonthlyTaskView> {
-  Widget build(BuildContext context) {
-    final connector = (builder) => StoreConnector<AppState, TaskVM>(
+  Widget connector({ builder }) {
+    return StoreConnector<AppState, TaskVM>(
       converter: TaskVM.fromStore,
-      rebuildOnChange: false,
       builder: builder
     );
+  }
 
+  Widget build(BuildContext context) {
     return connector(
-      (BuildContext context, TaskVM vm) {
+      builder: (BuildContext context, TaskVM vm) {
 
         return CustomScrollView(
           slivers: <Widget>[

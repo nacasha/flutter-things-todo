@@ -1,4 +1,6 @@
 
+class CaledarInitialStateAction {}
+
 class SetNextWeekAction {}
 
 class SetPreviousWeekAction {}
