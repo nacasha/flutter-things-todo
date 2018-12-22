@@ -6,6 +6,7 @@ class MyAppBar extends AppBar {
   MyAppBar({
     this.key,
     this.context,
+    this.callback,
     this.title = BaseAppBar.defaultTitle,
     this.bottomBody = BaseAppBar.defaultBottom,
     this.bottomHeight = 0,
@@ -26,6 +27,7 @@ class MyAppBar extends AppBar {
   final Widget bottomBody;
   final Widget title;
   final List actionButtons;
+  final Function callback;
 
   /// [Must] override this when override [bottom]
   ///
@@ -42,6 +44,6 @@ class MyAppBar extends AppBar {
 
   @override
   List<Widget> get actions => actionButtons.map(
-    (action) => BaseAppBar.actions(context)[action]
+    (action) => BaseAppBar.actions(context, callback)[action]
   ).toList();
 }

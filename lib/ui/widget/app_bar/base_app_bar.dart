@@ -20,7 +20,7 @@ class BaseAppBar {
   );
 
   /// [Default actions] for App Bar
-  static Map<String, Widget> actions(context) => <String, Widget>{
+  static Map<String, Widget> actions(context, callback) => <String, Widget>{
     'notification': _buildActionButton(
       icon: Icons.notifications,
       tooltip: 'Notifications',
@@ -31,12 +31,14 @@ class BaseAppBar {
     'add': _buildActionButton(
       icon: Icons.add,
       tooltip: 'Add new Task',
-      onPressed: () {
-        Navigator.of(context).push(
+      onPressed: () async {
+        final result = await Navigator.of(context).push(
           MaterialPageRoute(
             builder: (ctx) => TaskFormPage(previousContext: context),
           ),
         );
+
+        if (callback != null) callback(result);
       }
     )
   };

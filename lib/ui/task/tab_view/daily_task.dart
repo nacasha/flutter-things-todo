@@ -23,43 +23,38 @@ class DailyTaskViewState extends State<DailyTaskView> {
       builder: builder
     );
 
-    final overlap = NestedScrollView.sliverOverlapAbsorberHandleFor(context);
-
     return connector(
       (BuildContext context, TaskVM vm) {
         final tasks = vm.taskActiveList;
 
-        return Container(
-          margin: EdgeInsets.only(top: overlap.scrollExtent),
-          child: CustomScrollView(
-            slivers: <Widget>[
-              SliverAppBar(
-                backgroundColor: kBackgroundColor,
-                flexibleSpace: FlexibleSpaceBar(
-                  background: TaskSummaryCard(),
-                ),
-                expandedHeight: 130,
+        return CustomScrollView(
+          slivers: <Widget>[
+            SliverAppBar(
+              backgroundColor: kBackgroundColor,
+              flexibleSpace: FlexibleSpaceBar(
+                background: TaskSummaryCard(),
               ),
-              SliverList(
-                delegate: SliverChildBuilderDelegate(
-                  (BuildContext context, int index) {
-                    if (index == 0) return Container(
-                      decoration: BoxDecoration(
-                        border: Border(top: BorderSide(
-                          color: Colors.grey.shade300
-                        ))
-                      )
-                    );
+              expandedHeight: 130,
+            ),
+            SliverList(
+              delegate: SliverChildBuilderDelegate(
+                (BuildContext context, int index) {
+                  if (index == 0) return Container(
+                    decoration: BoxDecoration(
+                      border: Border(top: BorderSide(
+                        color: Colors.grey.shade300
+                      ))
+                    )
+                  );
 
-                    final task = tasks[index - 1];
+                  final task = tasks[index - 1];
 
-                    return TaskItem(task);
-                  },
-                  childCount: tasks.length + 1
-                )
+                  return TaskItem(task);
+                },
+                childCount: tasks.length + 1
               )
-            ],
-          )
+            )
+          ],
         );
       }
     );

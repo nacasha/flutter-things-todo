@@ -21,4 +21,20 @@ class TaskSelectors {
       (task) => task.status == TaskStatus.later
     ).toList()
   ));
+
+  static final taskInWeek = memo3(
+    (AppState state, DateTime from, DateTime to) => (
+      state.task.tasks.where(
+        (task) => task.status == TaskStatus.later
+      ).toList()
+    )
+  );
+
+  static final taskInMonth = memo3(
+    (AppState state, DateTime from, DateTime to) => (
+      state.task.tasks.where(
+        (task) => task.status == TaskStatus.later
+      ).toList()
+    )
+  );
 }

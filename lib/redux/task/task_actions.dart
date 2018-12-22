@@ -1,6 +1,8 @@
 import 'package:thingstodo/data/model/models.dart';
 
-class CreateTaskAction {
+import 'package:thingstodo/redux/persistor/persistor_actions.dart';
+
+class CreateTaskAction extends Persist {
   final TaskModel task;
 
   CreateTaskAction({
@@ -8,7 +10,7 @@ class CreateTaskAction {
   });
 }
 
-class UpdateTaskAction {
+class UpdateTaskAction extends Persist {
   final TaskModel task;
   final TaskModel updates;
 
@@ -18,7 +20,7 @@ class UpdateTaskAction {
   });
 }
 
-class RemoveTaskAction {
+class RemoveTaskAction extends Persist {
   final TaskModel task;
 
   RemoveTaskAction({

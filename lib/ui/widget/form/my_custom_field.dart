@@ -32,7 +32,6 @@ class MyCustomFieldState extends State<MyCustomField> {
     widget.controller.text = value;
   }
 
-
   Widget build(BuildContext context) {
     return Container(
       color: Colors.white,

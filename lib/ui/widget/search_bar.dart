@@ -16,19 +16,21 @@ class SearchBar extends StatelessWidget {
       enabledBorder: border,
       focusedBorder: border,
       contentPadding: EdgeInsets.symmetric(
-        vertical: 16,
-        horizontal: 20
+        vertical: 13,
+        horizontal: 17
       ),
     );
 
     return Padding(
-      padding: EdgeInsets.only(
-        bottom: 15,
-        left: 15,
-        right: 15
+      padding: EdgeInsets.symmetric(
+        horizontal: 15,
       ),
       child: TextField(
-        decoration: decoration
+        decoration: decoration,
+        style: TextStyle(
+          fontSize: 17,
+          color: Colors.black
+        ),
       ),
     );
   }

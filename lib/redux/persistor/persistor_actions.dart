@@ -1,0 +1,3 @@
+class NoPersist {}
+
+class Persist {}

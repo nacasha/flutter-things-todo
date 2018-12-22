@@ -1,11 +1,13 @@
+import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:intl/intl.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'package:thingstodo/theme/colors.dart';
 import 'package:thingstodo/data/model/models.dart';
 import 'package:thingstodo/ui/widget/form/form.dart';
 import 'package:thingstodo/redux/app/app_state.dart';
+import 'package:thingstodo/ui/widget/show_snack_bar.dart';
 import 'package:thingstodo/ui/widget/app_bar/my_app_bar.dart';
 
 import 'task_vm.dart';
@@ -24,10 +26,11 @@ class TaskFormPage extends StatefulWidget {
 class TaskFormPageState extends State<TaskFormPage> {
   final formKey = GlobalKey<FormState>();
 
-  final titleController = TextEditingController();
-  final categoryController = TextEditingController();
-  final dateTimeController = TextEditingController();
-  final descriptionController = TextEditingController();
+  TextEditingController titleController = TextEditingController();
+  TextEditingController categoryController = TextEditingController();
+  TextEditingController dateTimeController = TextEditingController();
+  TextEditingController descriptionController = TextEditingController();
+  int priorityController = 0;
 
   Future pickDateAndTime() async {
     String value = dateTimeController.text;
@@ -73,11 +76,13 @@ class TaskFormPageState extends State<TaskFormPage> {
       String dateTime = dateTimeController.text;
       String category = categoryController.text;
       String description = descriptionController.text;
+      int priority = priorityController;
 
       DateTime now = DateTime.now();
 
       String taskId = now.millisecondsSinceEpoch.toString();
       DateTime date = now.toUtc();
+      var priorityList = TaskPriority.values;
 
       if (dateTime != '') {
         date = DateTime.parse(dateTime).toUtc();
@@ -88,7 +93,7 @@ class TaskFormPageState extends State<TaskFormPage> {
         ..date = date
         ..title = taskName
         ..category = category
-        ..priority = TaskPriority.p1
+        ..priority = priorityList.elementAt(priority)
         ..status = TaskStatus.active
         ..description = description
         ..important = false
@@ -101,12 +106,10 @@ class TaskFormPageState extends State<TaskFormPage> {
       Navigator.of(context).pop();
 
       // Show snackbar in privous scaffold
-      Scaffold.of(widget.previousContext).showSnackBar(
-        SnackBar(
-          content: Text('New Task Added'),
-          backgroundColor: kSuccessColor,
-          duration: Duration(seconds: 1),
-        )
+      showSnackBar(
+        context: widget.previousContext,
+        content: Text('New Task Added'),
+        backgroundColor: kSuccessColor,
       );
     }
   }
@@ -117,8 +120,10 @@ class TaskFormPageState extends State<TaskFormPage> {
       appBar: MyAppBar(
         context: context,
         hideSearchBar: true,
+        actionButtons: ['notification'],
+        elevation: 0,
       ),
-      bottomNavigationBar: _formSubmitButton,
+      bottomSheet: formSubmitButton(context),
       backgroundColor: kBackgroundColor,
       body: SingleChildScrollView(
         child: _form,
@@ -145,9 +150,16 @@ class TaskFormPageState extends State<TaskFormPage> {
           labelText: 'Description',
           keyboardType: TextInputType.multiline,
         ),
-        MyInputField(
-          controller: categoryController,
-          labelText: 'Category',
+        Builder(
+          builder: (BuildContext context) {
+            return MyCustomField(
+              controller: categoryController,
+              labelText: 'Category',
+              onTap: () async {
+
+              },
+            );
+          }
         ),
         MyCustomField(
           controller: dateTimeController,
@@ -163,8 +175,14 @@ class TaskFormPageState extends State<TaskFormPage> {
         MySection(
           text: 'Priority'
         ),
-        MyCustomField(
-          labelText: 'Date & Time',
+        MyBuilderField(
+          builder: (BuildContext context) {
+            return Container(
+              child: Row(
+                children: _buildPriorityIcon()
+              ),
+            );
+          },
         ),
         MyCustomField(
           labelText: 'Notifications',
@@ -174,23 +192,87 @@ class TaskFormPageState extends State<TaskFormPage> {
   );
 
   /// [Form Submit Button]
-  Widget get _formSubmitButton => SizedBox(
-    height: 45,
-    width: double.infinity,
-    child: StoreConnector<AppState, TaskVM>(
-      converter: TaskVM.fromStore,
-      builder: (BuildContext context, vm) {
-        return RaisedButton(
-          onPressed: () { handleSubmitButton(context, vm); },
-          child: Text(
-            'ADD',
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              color: Colors.white,
+  Widget formSubmitButton(BuildContext context) {
+    return SizedBox(
+      height: 50,
+      width: double.infinity,
+      child: StoreConnector<AppState, TaskVM>(
+        converter: TaskVM.fromStore,
+        builder: (BuildContext context, vm) {
+          return RaisedButton(
+            onPressed: () { handleSubmitButton(context, vm); },
+            child: Text(
+              'ADD',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
             ),
+          );
+        }
+      )
+    );
+  }
+
+  List<Widget> _buildPriorityIcon() {
+    return [0, 1, 2, 3].map((index) {
+      var color = [kSuccessColor, kInfoColor, kWarningColor, kErrorColor];
+
+      double interpolate = priorityController == index ? 0.5 : 0;
+
+      return IconButton(
+        onPressed: () {
+          setState(() {
+            priorityController = index;
+          });
+        },
+        icon: Container(
+          margin: EdgeInsets.all(3),
+          decoration: BoxDecoration(
+            color: color[index],
+            border: Border.all(
+              width: 3,
+              color: Color.lerp(color[index], Colors.white, interpolate)
+            ),
+            borderRadius: BorderRadius.circular(100)
           ),
-        );
-      }
-    )
-  );
+        )
+      );
+    }).toList();
+  }
+
+  Widget pickCategory(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border(top: BorderSide(color: Colors.grey.shade300)),
+        boxShadow: [
+          BoxShadow(
+            blurRadius: 1,
+            color: Colors.grey.shade200,
+          )
+        ]
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          new ListTile(
+            leading: new Icon(Icons.music_note),
+            title: new Text('Music'),
+            onTap: () => () {}
+          ),
+          new ListTile(
+            leading: new Icon(Icons.photo_album),
+            title: new Text('Photos'),
+            onTap: () => () {}
+          ),
+          new ListTile(
+            leading: new Icon(Icons.videocam),
+            title: new Text('Video'),
+            onTap: () => () {}
+          ),
+        ],
+      ),
+    );
+  }
 }

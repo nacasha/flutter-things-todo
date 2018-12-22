@@ -21,6 +21,9 @@ class _$AppStateSerializer implements StructuredSerializer<AppState> {
       'task',
       serializers.serialize(object.task,
           specifiedType: const FullType(TaskState)),
+      'calendar',
+      serializers.serialize(object.calendar,
+          specifiedType: const FullType(CalendarState)),
     ];
 
     return result;
@@ -41,6 +44,10 @@ class _$AppStateSerializer implements StructuredSerializer<AppState> {
           result.task.replace(serializers.deserialize(value,
               specifiedType: const FullType(TaskState)) as TaskState);
           break;
+        case 'calendar':
+          result.calendar.replace(serializers.deserialize(value,
+              specifiedType: const FullType(CalendarState)) as CalendarState);
+          break;
       }
     }
 
@@ -51,13 +58,18 @@ class _$AppStateSerializer implements StructuredSerializer<AppState> {
 class _$AppState extends AppState {
   @override
   final TaskState task;
+  @override
+  final CalendarState calendar;
 
   factory _$AppState([void updates(AppStateBuilder b)]) =>
       (new AppStateBuilder()..update(updates)).build();
 
-  _$AppState._({this.task}) : super._() {
+  _$AppState._({this.task, this.calendar}) : super._() {
     if (task == null) {
       throw new BuiltValueNullFieldError('AppState', 'task');
+    }
+    if (calendar == null) {
+      throw new BuiltValueNullFieldError('AppState', 'calendar');
     }
   }
 
@@ -71,17 +83,21 @@ class _$AppState extends AppState {
   @override
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
-    return other is AppState && task == other.task;
+    return other is AppState &&
+        task == other.task &&
+        calendar == other.calendar;
   }
 
   @override
   int get hashCode {
-    return $jf($jc(0, task.hashCode));
+    return $jf($jc($jc(0, task.hashCode), calendar.hashCode));
   }
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper('AppState')..add('task', task))
+    return (newBuiltValueToStringHelper('AppState')
+          ..add('task', task)
+          ..add('calendar', calendar))
         .toString();
   }
 }
@@ -93,11 +109,17 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
   TaskStateBuilder get task => _$this._task ??= new TaskStateBuilder();
   set task(TaskStateBuilder task) => _$this._task = task;
 
+  CalendarStateBuilder _calendar;
+  CalendarStateBuilder get calendar =>
+      _$this._calendar ??= new CalendarStateBuilder();
+  set calendar(CalendarStateBuilder calendar) => _$this._calendar = calendar;
+
   AppStateBuilder();
 
   AppStateBuilder get _$this {
     if (_$v != null) {
       _task = _$v.task?.toBuilder();
+      _calendar = _$v.calendar?.toBuilder();
       _$v = null;
     }
     return this;
@@ -120,12 +142,15 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
   _$AppState build() {
     _$AppState _$result;
     try {
-      _$result = _$v ?? new _$AppState._(task: task.build());
+      _$result = _$v ??
+          new _$AppState._(task: task.build(), calendar: calendar.build());
     } catch (_) {
       String _$failedField;
       try {
         _$failedField = 'task';
         task.build();
+        _$failedField = 'calendar';
+        calendar.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
             'AppState', _$failedField, e.toString());

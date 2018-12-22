@@ -2,9 +2,12 @@ import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_calendar/flutter_calendar.dart';
+import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 
+import 'package:thingstodo/theme/colors.dart';
 import 'package:thingstodo/redux/app/app_state.dart';
-import 'package:thingstodo/ui/widget/inline_calendar.dart';
+import 'package:thingstodo/ui/widget/calendar/inline_calendar.dart';
+import 'package:thingstodo/ui/widget/builder/my_persistent_header_delegate.dart';
 
 import '../task_item.dart';
 import '../task_vm.dart';
@@ -21,29 +24,16 @@ class WeeklyTaskViewState extends State<WeeklyTaskView> {
       builder: builder
     );
 
-    final overlap = NestedScrollView.sliverOverlapAbsorberHandleFor(context);
-
     return connector(
       (BuildContext context, TaskVM vm) {
         final tasks = vm.taskActiveList;
 
-        return Container(
-          margin: EdgeInsets.only(top: overlap.scrollExtent),
-          child: CustomScrollView(
-            slivers: <Widget>[
-              buildInlineCalendar(),
-              SliverList(
-                delegate: SliverChildBuilderDelegate(
-                  (BuildContext context, int index) {
-                    final task = tasks[index];
-
-                    return TaskItem(task);
-                  },
-                  childCount: tasks.length
-                )
-              )
-            ],
-          ),
+        return CustomScrollView(
+          slivers: <Widget>[
+            buildInlineCalendar(),
+            buildTaskList(tasks, 'Today'),
+            buildTaskList(tasks, '28 December')
+          ],
         );
       }
     );
@@ -51,27 +41,53 @@ class WeeklyTaskViewState extends State<WeeklyTaskView> {
 
   Widget buildInlineCalendar() {
     return SliverPersistentHeader(
-      delegate: _InlineCalendarPersistHeader(),
       pinned: true,
-      floating: true,
+      floating: false,
+      delegate: MyPersistentHeaderDelegate(
+        minExtent: 76,
+        maxExtent: 76,
+        rebuild: (oldDelegate) => false,
+        builder: (context, offset, overlaps) {
+          return InlineCalendar(
+            forceElevate: true,
+          );
+        }
+      ),
     );
   }
-}
 
-class _InlineCalendarPersistHeader extends SliverPersistentHeaderDelegate {
-  @override
-  double get minExtent => 70;
+  Widget buildTaskList(tasks, text) {
+    return SliverStickyHeaderBuilder(
+      builder: (context, state) {
+        return Container(
+          height: 35,
+          decoration: BoxDecoration(
+            color: kBackgroundColor,
+            border: Border(bottom: BorderSide(
+              color: Colors.grey.shade300
+            ))
+          ),
+          alignment: Alignment.center,
+          child: new Text(
+            text,
+            style: const TextStyle(
+              color: kPrimaryColor,
+              fontSize: 15,
+              fontWeight: FontWeight.bold
+            ),
+          ),
+        );
+      },
+      sliver: SliverList(
+        delegate: SliverChildBuilderDelegate(
+          (BuildContext context, int index) {
+            final task = tasks[index];
 
-  @override
-  double get maxExtent => 70;
-
-  @override
-  bool shouldRebuild(SliverPersistentHeaderDelegate oldDelegate) {
-    return true;
-  }
-
-  @override
-  Widget build(BuildContext context, double shrinkOffset, bool overlapsContent) {
-    return InlineCalendar();
+            return TaskItem(task);
+          },
+          childCount: tasks.length
+        )
+      )
+    );
   }
 }

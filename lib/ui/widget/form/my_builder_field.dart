@@ -1,21 +1,23 @@
 import 'package:flutter/material.dart';
 
-class MyCustomField extends StatefulWidget {
-  final String labelText;
+class MyBuilderField extends StatefulWidget {
+  final Function onTap;
+  final Function builder;
   final String initialText;
   TextEditingController controller;
 
-  MyCustomField({
+  MyBuilderField({
+    this.onTap,
+    this.builder,
     this.controller,
-    this.labelText,
     this.initialText = ''
   });
 
   @override
-  MyBuilderField createState() => MyBuilderField();
+  MyBuilderFieldState createState() => MyBuilderFieldState();
 }
 
-class MyBuilderField extends State<MyCustomField> {
+class MyBuilderFieldState extends State<MyBuilderField> {
   @override
   void initState() {
     super.initState();
@@ -34,14 +36,16 @@ class MyBuilderField extends State<MyCustomField> {
       child: Material(
         color: Colors.transparent,
         child: InkWell(
-          child: TextField(
-            controller: widget.controller,
-            enabled: false,
-            decoration: InputDecoration().copyWith(
-              fillColor: Colors.transparent,
-              labelText: widget.labelText,
+          onTap: widget.onTap,
+          child: Container(
+            decoration: BoxDecoration(
+              border: Border(bottom: BorderSide(
+                color: Colors.grey.shade300
+              ))
             ),
-          ),
+            constraints: BoxConstraints.expand(height: 55),
+            child: Builder(builder: widget.builder),
+          )
         ),
       ),
     );

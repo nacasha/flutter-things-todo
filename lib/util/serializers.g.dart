@@ -8,6 +8,7 @@ part of 'serializers.dart';
 
 Serializers _$serializers = (new Serializers().toBuilder()
       ..add(AppState.serializer)
+      ..add(CalendarState.serializer)
       ..add(TaskModel.serializer)
       ..add(TaskPriority.serializer)
       ..add(TaskState.serializer)

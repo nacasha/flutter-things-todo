@@ -7,7 +7,7 @@ import '../redux/app/app_state.dart';
 import '../util/serializers.dart';
 
 final persistor = Persistor(
-  storage: FlutterStorage("thingstodo-source"),
+  storage: FlutterStorage("thingstodo"),
   transforms: Transforms(
     onSave: [
       (state) => serializers.serialize(

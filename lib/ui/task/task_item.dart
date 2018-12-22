@@ -16,7 +16,7 @@ class TaskItem extends StatelessWidget {
 
   final TaskModel task;
 
-  onTaskDismissed(direction, context, vm) {
+  onTaskDismissed(direction, context, TaskVM vm) {
     TaskStatus updates;
     Color snackbarColor;
     Text snackbarContent;
@@ -37,11 +37,13 @@ class TaskItem extends StatelessWidget {
     showSnackBar(
       context: context,
       content: snackbarContent,
-      backgroudColor: snackbarColor,
+      backgroundColor: snackbarColor,
     );
-    vm.updateTask(task, task.rebuild((b) => b
-      ..status = updates
-    ));
+    vm.removeTask(task);
+
+    // vm.updateTask(task, task.rebuild((b) => b
+    //   ..status = updates
+    // ));
   }
 
   onTaskStarPressed(vm) {

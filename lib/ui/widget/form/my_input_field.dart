@@ -26,10 +26,14 @@ class MyInputField extends StatelessWidget {
         controller: controller,
         validator: validator,
         keyboardType: keyboardType != null ? keyboardType : TextInputType.text,
+        maxLines: keyboardType == TextInputType.multiline ? null : 1,
         decoration: InputDecoration().copyWith(
           labelText: labelText,
         ),
-        maxLines: keyboardType == TextInputType.multiline ? null : 1,
+        style: TextStyle(
+          fontSize: 16,
+          color: Colors.grey.shade800
+        ),
       ),
     );
   }

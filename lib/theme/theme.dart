@@ -29,7 +29,6 @@ final ThemeData theme = ThemeData(
       fontSize: 14,
     ),
     labelStyle: TextStyle(
-      color: Colors.grey.shade600
     ),
     errorStyle: TextStyle(
       height: 0.5,
@@ -37,7 +36,7 @@ final ThemeData theme = ThemeData(
     ),
     contentPadding: EdgeInsets.symmetric(
       horizontal: 15,
-      vertical: 10
+      vertical: 13
     ),
     border: UnderlineInputBorder(
       borderSide: BorderSide(color: Colors.grey.shade300),

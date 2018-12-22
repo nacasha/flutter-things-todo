@@ -13,6 +13,9 @@ class TaskVM {
   final List<TaskModel> taskLaterList;
   final List<TaskModel> taskDoneList;
 
+  final List<TaskModel> taskInMonth;
+  final List<TaskModel> taskInWeek;
+
   final Function createTask;
   final Function removeTask;
   final Function updateTask;
@@ -21,6 +24,8 @@ class TaskVM {
     @required this.taskActiveList,
     @required this.taskLaterList,
     @required this.taskDoneList,
+    @required this.taskInMonth,
+    @required this.taskInWeek,
     @required this.createTask,
     @required this.removeTask,
     @required this.updateTask,
@@ -35,6 +40,8 @@ class TaskVM {
       taskActiveList: TaskSelectors.taskActiveList(state),
       taskLaterList: TaskSelectors.taskLaterList(state),
       taskDoneList: TaskSelectors.taskDoneList(state),
+      taskInMonth: TaskSelectors.taskDoneList(state),
+      taskInWeek: TaskSelectors.taskDoneList(state),
 
       // Methods
       createTask: (TaskModel task) {

@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 
-showSnackBar({ context, content, backgroudColor }) {
-  return Scaffold.of(context).showSnackBar(
-    SnackBar(
-      content: content,
-      backgroundColor: backgroudColor,
-      duration: Duration(seconds: 1)
-    )
-  );
+showSnackBar({ context, content, backgroundColor }) {
+  return Scaffold.of(context)
+    ..removeCurrentSnackBar()
+    ..showSnackBar(
+      SnackBar(
+        content: content,
+        backgroundColor: backgroundColor,
+        duration: Duration(seconds: 1)
+      )
+    );
 }

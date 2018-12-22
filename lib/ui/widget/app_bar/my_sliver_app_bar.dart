@@ -6,18 +6,15 @@ import 'base_app_bar.dart';
 
 class MySliverAppBar extends SliverAppBar {
   static const Widget defaultBottom = SizedBox();
-  static const Widget defaultFlexibleSpace = FlexibleSpaceBar(
-    collapseMode: CollapseMode.pin,
-    background: SearchBar()
-  );
 
   MySliverAppBar({
     this.key,
     this.context,
+    this.callback,
     this.bottom,
     this.expandedHeight,
     this.title = BaseAppBar.defaultTitle,
-    this.flexibleSpace = defaultFlexibleSpace,
+    this.flexibleSpace,
     this.pinned = false,
     this.snap = false,
     this.floating = false,
@@ -39,9 +36,10 @@ class MySliverAppBar extends SliverAppBar {
   final BuildContext context;
   final List actionButtons;
   final Widget title;
+  final Function callback;
 
   @override
   List<Widget> get actions => actionButtons.map(
-    (action) => BaseAppBar.actions(context)[action]
+    (action) => BaseAppBar.actions(context, callback)[action]
   ).toList();
 }
