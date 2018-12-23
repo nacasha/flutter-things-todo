@@ -19,12 +19,14 @@ class SearchBar extends StatelessWidget {
       enabledBorder: border,
       focusedBorder: border,
       contentPadding: EdgeInsets.symmetric(
-        vertical: 13,
+        vertical: 1,
         horizontal: 17
       ),
     );
 
     final searchInput = Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[
         Expanded(
           child: TextField(
@@ -45,8 +47,9 @@ class SearchBar extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 15),
       child: Container(
-        height: 50,
+        height: 45,
         padding: EdgeInsets.only(right: 17),
+        alignment: Alignment.center,
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(3)

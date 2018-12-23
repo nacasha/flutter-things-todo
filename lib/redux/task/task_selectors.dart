@@ -4,13 +4,24 @@ import 'package:thingstodo/data/model/models.dart';
 import 'package:memoize/memoize.dart';
 import 'package:collection/collection.dart';
 import 'package:intl/intl.dart';
+import 'package:built_collection/built_collection.dart';
 
 class TaskSelectors {
-  static final isActive = (
-    memo1((task) => task.status == TaskStatus.active)
-  );
+  final AppState state;
 
-  static sortTask(List<TaskModel> tasks) {
+  TaskSelectors(this.state) {
+    _tasks = state.task.tasks;
+  }
+
+  BuiltList<TaskModel> _tasks;
+
+  // Filters
+  final _isActive = (task) => task.status == TaskStatus.active;
+  final _isLater = (task) => task.status == TaskStatus.later;
+  final _isDone = (task) => task.status == TaskStatus.done;
+  final _isImportant = (task) => task.important == true;
+
+  List<TaskModel> _sortTask(List<TaskModel> tasks) {
     tasks.sort((TaskModel a, TaskModel b) {
       final dA = a.date?.toLocal();
       final dB = b.date?.toLocal();
@@ -24,75 +35,91 @@ class TaskSelectors {
     return tasks;
   }
 
-  static final taskActiveList = memo1((AppState state) => (
-    state.task.tasks.where(
-      (task) => isActive(task)
-    ).toList()
-  ));
+  final groupTask = memo1((List<TaskModel> tasks) =>
+    groupBy(tasks, (TaskModel task) => (
+      DateFormat('dd MMMM').format(task.date.toLocal())
+    ))
+  );
 
-  static final taskDoneList = memo1((AppState state) => (
-    state.task.tasks.where(
-      (task) => task.status == TaskStatus.done
-    ).toList()
-  ));
 
-  static final taskLaterList = memo1((AppState state) => (
-    state.task.tasks.where(
-      (task) => task.status == TaskStatus.later
-    ).toList()
-  ));
+  // Selectors
+  get doneTask {
+    final build = memo1((tasks) => (
+      tasks.where((task) => _isDone(task)).toList()
+    ));
 
-  static dailyTask(AppState state) {
-    final tasks = state.task.tasks;
-    final selectedDate = state.calendar.selectedDate?.toLocal();
+    final List<TaskModel> result = build(_tasks);
+    final List<TaskModel> sortedTask = _sortTask(result);
 
-    final build = memo2((tasks, selectedDate) {
+    return groupTask(sortedTask);
+  }
+
+  get laterTask {
+    final build = memo1((tasks) => (
+      tasks.where((task) => _isLater(task)).toList()
+    ));
+
+    final List<TaskModel> result = build(_tasks);
+    final List<TaskModel> sortedTask = _sortTask(result);
+
+    return groupTask(sortedTask);
+  }
+
+  get importantTask {
+    final build = memo1((tasks) => (
+      tasks.where((task) => _isImportant(task)).toList()
+    ));
+
+    final List<TaskModel> result = build(_tasks);
+    final List<TaskModel> sortedTask = _sortTask(result);
+
+    return groupTask(sortedTask);
+  }
+
+  get dailyTask {
+    final today = DateTime.now().toLocal();
+
+    final build = memo2((tasks, today) {
       return tasks.where(
         (task) => (
-          isActive(task) &&
-          (Utils.isSameDay(task.date.toLocal(), selectedDate))
+          _isActive(task) &&
+          (Utils.isSameDay(task.date.toLocal(), today))
         )
       ).toList();
     });
 
-    final List<TaskModel> result = build(tasks, selectedDate);
+    final List<TaskModel> result = build(_tasks, today);
 
-    return sortTask(result);
+    return _sortTask(result);
   }
 
-  static weeklyTask(AppState state) {
-    final tasks = state.task.tasks;
+  get weeklyTask {
     final date = state.calendar.date?.toLocal();
 
     final build = memo2((tasks, date) {
       return tasks.where(
-        (task) => isActive(task) &&
+        (task) => _isActive(task) &&
         (Utils.isSameWeek(task.date.toLocal(), date))
       ).toList();
     });
 
-    final List<TaskModel> result = build(tasks, date);
-    final List<TaskModel> sortedTask = sortTask(result);
+    final List<TaskModel> result = build(_tasks, date);
+    final List<TaskModel> sortedTask = _sortTask(result);
 
-    final groupOfTasks = groupBy(sortedTask, (TaskModel task) => (
-      DateFormat('dd MMMM').format(task.date.toLocal())
-    ));
-
-    return groupOfTasks;
+    return groupTask(sortedTask);
   }
 
-  static monthlyTask(AppState state) {
-    final tasks = state.task.tasks;
+  get monthlyTask {
     final selectedDate = state.calendar.selectedDate?.toLocal();
 
     final build = memo2((tasks, selectedDate) {
       return tasks.where(
-        (task) =>isActive(task)
+        (task) =>_isActive(task)
       ).toList();
     });
 
-    final List<TaskModel> result = build(tasks, selectedDate);
+    final List<TaskModel> result = build(_tasks, selectedDate);
 
-    return sortTask(result);
+    return _sortTask(result);
   }
 }

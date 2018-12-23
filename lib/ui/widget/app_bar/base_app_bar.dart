@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:thingstodo/ui/task/task_form_page.dart';
+import 'package:thingstodo/ui/task/pages/task_form_page.dart';
 
 import '../search_bar.dart';
 
@@ -48,11 +48,16 @@ class BaseAppBar {
     return PreferredSize(
       preferredSize: Size.fromHeight((hideSearchBar ? 0 : 65) + bottomHeight),
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          hideSearchBar ? Container() : SearchBar(),
+          hideSearchBar ? Container() : Padding(
+            padding: EdgeInsets.only(bottom: 15),
+            child: SearchBar(),
+          ),
           bottomBody
         ],
-      ),
+      )
     );
   }
 

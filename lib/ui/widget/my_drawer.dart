@@ -2,90 +2,126 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'package:thingstodo/theme/colors.dart';
+import 'package:thingstodo/ui/task/pages/task_form_page.dart';
+import 'package:thingstodo/ui/task/pages/task_filtered_page.dart';
 
 class MyDrawer extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView(
       padding: EdgeInsets.zero,
       children: <Widget>[
-        DrawerHeader(
-          padding: EdgeInsets.zero,
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Container(
-                  margin: EdgeInsets.only(bottom: 10),
-                  constraints: BoxConstraints.tightFor(
-                    width: 70,
-                    height: 70
-                  ),
-                  decoration: BoxDecoration(
-                    color: kPrimaryColor,
-                    border: Border.all(
-                      width: 5,
-                      color: Color.lerp(kPrimaryColor, Colors.white, 0.5)
-                    ),
-                    borderRadius: BorderRadius.circular(100)
-                  ),
-                ),
-                Text(
-                  'Izal Fathoni',
-                  style: TextStyle(
-                    fontSize: 17,
-                    color: Colors.white,
-                  ),
-                )
-              ],
-            )
-          ),
-          decoration: BoxDecoration(
-            color: kPrimaryColor,
-          ),
+        buildDrawerHeader(),
+        buildListTile(
+          icon: FontAwesomeIcons.plus,
+          title: 'Task',
+          onTap: () async {
+            await Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (ctx) => TaskFormPage(previousContext: context),
+              ),
+            );
+            Navigator.of(context).pop();
+          },
         ),
-        ListTile(
-          dense: true,
-          leading: Icon(FontAwesomeIcons.plus),
-          title: Text('New Task'),
+        buildListTile(
+          icon: FontAwesomeIcons.star,
+          title: 'Important',
+          onTap: () {
+            Navigator.of(context).pop();
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (ctx) => TaskFilteredPage(filterType: 'important'),
+              ),
+            );
+          },
+        ),
+        buildListTile(
+          icon: FontAwesomeIcons.check,
+          title: 'Done',
+          onTap: () {
+            Navigator.of(context).pop();
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (ctx) => TaskFilteredPage(filterType: 'done'),
+              ),
+            );
+          },
+        ),
+        buildListTile(
+          icon: FontAwesomeIcons.clock,
+          title: 'Later',
+          onTap: () {
+            Navigator.of(context).pop();
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (ctx) => TaskFilteredPage(filterType: 'later'),
+              ),
+            );
+          },
+        ),
+        buildListTile(
+          icon: FontAwesomeIcons.tags,
+          title: 'Category',
           onTap: () {},
         ),
-        ListTile(
-          dense: true,
-          leading: Icon(FontAwesomeIcons.star),
-          title: Text('Important'),
+        buildListTile(
+          icon: FontAwesomeIcons.cog,
+          title: 'Settings',
           onTap: () {},
         ),
-        ListTile(
-          dense: true,
-          leading: Icon(FontAwesomeIcons.check),
-          title: Text('Done'),
-          onTap: () {},
-        ),
-        ListTile(
-          dense: true,
-          leading: Icon(FontAwesomeIcons.clock),
-          title: Text('Later'),
-          onTap: () {},
-        ),
-        ListTile(
-          dense: true,
-          leading: Icon(FontAwesomeIcons.tags),
-          title: Text('Category'),
-          onTap: () {},
-        ),
-        ListTile(
-          dense: true,
-          leading: Icon(FontAwesomeIcons.cog),
-          title: Text('Settings'),
-          onTap: () {},
-        ),
-        ListTile(
-          dense: true,
-          leading: Icon(FontAwesomeIcons.signOutAlt),
-          title: Text('Logout'),
-          onTap: () {},
-        ),
+        buildListTile(
+          icon: FontAwesomeIcons.signOutAlt,
+          title: 'Logout',
+          onTap: () {}
+        )
       ],
+    );
+  }
+
+  Widget buildDrawerHeader() {
+    return DrawerHeader(
+      padding: EdgeInsets.zero,
+      child: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Container(
+              margin: EdgeInsets.only(bottom: 10),
+              constraints: BoxConstraints.tightFor(
+                width: 70,
+                height: 70
+              ),
+              decoration: BoxDecoration(
+                color: kPrimaryColor,
+                border: Border.all(
+                  width: 5,
+                  color: Color.lerp(kPrimaryColor, Colors.white, 0.5)
+                ),
+                borderRadius: BorderRadius.circular(100)
+              ),
+            ),
+            Text(
+              'Izal Fathoni',
+              style: TextStyle(
+                fontSize: 17,
+                color: Colors.white,
+              ),
+            )
+          ],
+        )
+      ),
+      decoration: BoxDecoration(
+        color: kPrimaryColor,
+      ),
+    );
+  }
+
+  Widget buildListTile({ icon, title, onTap }) {
+    return ListTile(
+      dense: true,
+      leading: Icon(icon),
+      title: Text(title),
+      onTap: onTap,
     );
   }
 }

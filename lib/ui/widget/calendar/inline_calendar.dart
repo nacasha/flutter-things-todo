@@ -10,9 +10,13 @@ import 'calendar_vm.dart';
 
 class InlineCalendar extends StatefulWidget {
   final bool forceElevate;
+  final Function onTap;
+  final Function onLongTap;
 
   InlineCalendar({
-    this.forceElevate = false
+    this.forceElevate = false,
+    this.onTap,
+    this.onLongTap,
   });
 
   @override
@@ -173,6 +177,27 @@ class InlineCalendarState extends State<InlineCalendar> {
 
     bool selected = Utils.isSameDay(vm.selectedDate, date);
 
+    final calendarText = TextSpan(
+      children: [
+        TextSpan(
+          text: '$daylabel\n',
+          style: TextStyle(
+            fontSize: 12,
+            color: selected ? kPrimaryColor : Colors.grey.shade200
+          )
+        ),
+        TextSpan(
+          text: dateLabel,
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 13,
+            height: 1.2,
+            color: selected ? kPrimaryColor : Colors.grey.shade200
+          )
+        )
+      ]
+    );
+
     return Expanded(
       child: Container(
         color: selected ? Colors.white : kPrimaryColor,
@@ -181,31 +206,16 @@ class InlineCalendarState extends State<InlineCalendar> {
           color: Colors.transparent,
           child: InkWell(
             onTap: () {
-              vm.updateSelectedDate(date);
+              // vm.updateSelectedDate(date);
+
+              if (widget.onTap != null) {
+                widget.onTap(date);
+              }
             },
             child: Center(
               child: RichText(
                 textAlign: TextAlign.center,
-                text: TextSpan(
-                  children: [
-                    TextSpan(
-                      text: '$daylabel\n',
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: selected ? kPrimaryColor : Colors.grey.shade200
-                      )
-                    ),
-                    TextSpan(
-                      text: dateLabel,
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 13,
-                        height: 1.2,
-                        color: selected ? kPrimaryColor : Colors.grey.shade200
-                      )
-                    )
-                  ]
-                ),
+                text: calendarText
               ),
             )
           )

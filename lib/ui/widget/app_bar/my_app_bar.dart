@@ -14,6 +14,7 @@ class MyAppBar extends AppBar {
     this.bottomBody = BaseAppBar.defaultBottom,
     this.title = BaseAppBar.defaultTitle,
     this.actionButtons = BaseAppBar.defaultActions,
+    this.titleSpacing = NavigationToolbar.kMiddleSpacing,
   }) : assert(context != null, 'Provide context params to MyAppBar'),
        super(key: key);
 
@@ -22,12 +23,15 @@ class MyAppBar extends AppBar {
   final bool hideSearchBar;
   final bool pinned;
   final BuildContext context;
+  final double titleSpacing;
   final double bottomHeight;
   final double elevation;
   final Function callback;
   final List actionButtons;
   final Widget bottomBody;
   final Widget title;
+
+  final bool automaticallyImplyLeading = true;
 
   @override
   Size get preferredSize => BaseAppBar.preferredSize(bottom);

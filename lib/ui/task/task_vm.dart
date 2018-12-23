@@ -9,22 +9,22 @@ import 'package:thingstodo/redux/task/task_actions.dart';
 import 'package:thingstodo/redux/task/task_selectors.dart';
 
 class TaskVM {
-  final List<TaskModel> taskActiveList;
-  final List<TaskModel> taskLaterList;
-  final List<TaskModel> taskDoneList;
+  final Map<String, List<TaskModel>> doneTask;
+  final Map<String, List<TaskModel>> laterTask;
+  final Map<String, List<TaskModel>> importantTask;
 
   final List<TaskModel> dailyTask;
-  final Map<String, List<TaskModel>> weeklyTask;
   final List<TaskModel> monthlyTask;
+  final Map<String, List<TaskModel>> weeklyTask;
 
   final Function createTask;
   final Function removeTask;
   final Function updateTask;
 
   TaskVM({
-    @required this.taskActiveList,
-    @required this.taskLaterList,
-    @required this.taskDoneList,
+    @required this.doneTask,
+    @required this.laterTask,
+    @required this.importantTask,
     @required this.dailyTask,
     @required this.weeklyTask,
     @required this.monthlyTask,
@@ -38,13 +38,13 @@ class TaskVM {
     final dispatch = store.dispatch;
 
     return TaskVM(
-      taskActiveList: TaskSelectors.taskActiveList(state),
-      taskLaterList: TaskSelectors.taskLaterList(state),
-      taskDoneList: TaskSelectors.taskDoneList(state),
+      doneTask: TaskSelectors(state).doneTask,
+      laterTask: TaskSelectors(state).laterTask,
+      importantTask: TaskSelectors(state).importantTask,
 
-      dailyTask: TaskSelectors.dailyTask(state),
-      weeklyTask: TaskSelectors.weeklyTask(state),
-      monthlyTask: TaskSelectors.monthlyTask(state),
+      dailyTask: TaskSelectors(state).dailyTask,
+      weeklyTask: TaskSelectors(state).weeklyTask,
+      monthlyTask: TaskSelectors(state).monthlyTask,
 
       createTask: (TaskModel task) {
         dispatch(CreateTaskAction(task: task));

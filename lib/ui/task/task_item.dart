@@ -23,12 +23,12 @@ class TaskItem extends StatelessWidget {
 
     switch(direction) {
       case DismissDirection.startToEnd:
-        snackbarContent = Text('Mark as Done');
+        snackbarContent = Text('Marked as Done');
         snackbarColor = kSuccessColor;
         updates = TaskStatus.done;
         break;
       case DismissDirection.endToStart:
-        snackbarContent = Text('Mark as Later');
+        snackbarContent = Text('Marked eas Later');
         snackbarColor = kErrorColor;
         updates = TaskStatus.later;
         break;

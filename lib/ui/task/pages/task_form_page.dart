@@ -10,7 +10,7 @@ import 'package:thingstodo/redux/app/app_state.dart';
 import 'package:thingstodo/ui/widget/show_snack_bar.dart';
 import 'package:thingstodo/ui/widget/app_bar/my_app_bar.dart';
 
-import 'task_vm.dart';
+import '../task_vm.dart';
 
 class TaskFormPage extends StatefulWidget {
   static final String route = '/task-form';
@@ -114,7 +114,6 @@ class TaskFormPageState extends State<TaskFormPage> {
     }
   }
 
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: MyAppBar(
@@ -167,9 +166,11 @@ class TaskFormPageState extends State<TaskFormPage> {
           onTap: () async {
             final value = await pickDateAndTime();
 
-            setState(() {
-              dateTimeController.text = value.toString();
-            });
+            if (value != null) {
+              setState(() {
+                dateTimeController.text = value.toString();
+              });
+            }
           },
         ),
         MySection(
