@@ -4,12 +4,10 @@ import 'package:built_value/serializer.dart';
 
 part 'calendar_state.g.dart';
 
-const String defaultValue = 'defaultValue';
-
 abstract class CalendarState implements Built<CalendarState, CalendarStateBuilder> {
   static Serializer<CalendarState> get serializer => _$calendarStateSerializer;
 
-  @defaultValue
+  @nullable
   DateTime get date;
 
   @nullable

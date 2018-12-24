@@ -155,7 +155,46 @@ class TaskFormPageState extends State<TaskFormPage> {
               controller: categoryController,
               labelText: 'Category',
               onTap: () async {
-
+                await showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return SimpleDialog(
+                      title: const Text('Select category'),
+                      contentPadding: EdgeInsets.symmetric(
+                        vertical: 20
+                      ),
+                      children: <Widget>[
+                        SimpleDialogOption(
+                          child: const Text('Uncategorized'),
+                          onPressed: () {  },
+                        ),
+                        SimpleDialogOption(
+                          child: const Text('Family'),
+                          onPressed: () { },
+                        ),
+                        SimpleDialogOption(
+                          child: const Text('Office'),
+                          onPressed: () { },
+                        ),
+                        SimpleDialogOption(
+                          child: const Text('Vacation'),
+                          onPressed: () { },
+                        ),
+                        SimpleDialogOption(
+                          child: const Text('Health'),
+                          onPressed: () { },
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(top: 15),
+                          child: SimpleDialogOption(
+                            child: Text('Add new category'),
+                            onPressed: () { },
+                          ),
+                        )
+                      ],
+                    );
+                  }
+                );
               },
             );
           }
@@ -185,9 +224,9 @@ class TaskFormPageState extends State<TaskFormPage> {
             );
           },
         ),
-        MyCustomField(
-          labelText: 'Notifications',
-        ),
+        // MyCustomField(
+        //   labelText: 'Notifications',
+        // ),
       ],
     ),
   );

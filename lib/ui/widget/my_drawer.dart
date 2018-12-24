@@ -62,7 +62,10 @@ class MyDrawer extends StatelessWidget {
         buildListTile(
           icon: FontAwesomeIcons.tags,
           title: 'Category',
-          onTap: () {},
+          onTap: () {
+            Navigator.of(context).pop();
+            Navigator.of(context).pushNamed('/category');
+          },
         ),
         buildListTile(
           icon: FontAwesomeIcons.cog,

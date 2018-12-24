@@ -9,10 +9,15 @@ part of 'serializers.dart';
 Serializers _$serializers = (new Serializers().toBuilder()
       ..add(AppState.serializer)
       ..add(CalendarState.serializer)
+      ..add(CategoryModel.serializer)
+      ..add(CategoryState.serializer)
       ..add(TaskModel.serializer)
       ..add(TaskPriority.serializer)
       ..add(TaskState.serializer)
       ..add(TaskStatus.serializer)
+      ..addBuilderFactory(
+          const FullType(BuiltList, const [const FullType(CategoryModel)]),
+          () => new ListBuilder<CategoryModel>())
       ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(TaskModel)]),
           () => new ListBuilder<TaskModel>()))

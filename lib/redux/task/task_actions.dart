@@ -1,5 +1,4 @@
 import 'package:thingstodo/data/model/models.dart';
-
 import 'package:thingstodo/redux/persistor/persistor_actions.dart';
 
 class CreateTaskAction extends Persist {

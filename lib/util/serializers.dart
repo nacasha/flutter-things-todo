@@ -5,6 +5,7 @@ import 'package:built_value/standard_json_plugin.dart';
 import 'package:thingstodo/data/model/models.dart';
 import 'package:thingstodo/redux/app/app_state.dart';
 import 'package:thingstodo/redux/task/task_state.dart';
+import 'package:thingstodo/redux/category/category_state.dart';
 import 'package:thingstodo/redux/calendar/calendar_state.dart';
 
 part 'serializers.g.dart';
@@ -14,9 +15,11 @@ part 'serializers.g.dart';
   AppState,
   TaskState,
   CalendarState,
+  CategoryState,
 
   /// [Model]
   TaskModel,
+  CategoryModel,
 
   /// [Enum]
   TaskStatus,

@@ -25,8 +25,7 @@ class TaskFilteredPage extends StatefulWidget {
   TaskFilteredPageState createState() => TaskFilteredPageState();
 }
 
-class TaskFilteredPageState extends State<TaskFilteredPage> with SingleTickerProviderStateMixin {
-  double isScrolled = 0;
+class TaskFilteredPageState extends State<TaskFilteredPage> {
   TabController tabController;
 
   Widget connector({ builder }) {
@@ -39,9 +38,6 @@ class TaskFilteredPageState extends State<TaskFilteredPage> with SingleTickerPro
   Widget build(BuildContext context) {
     // build
     return Scaffold(
-      drawer: Drawer(
-        child: MyDrawer(),
-      ),
       appBar: buildAppBar(context),
       body: Builder(
         builder: (BuildContext context) {
@@ -101,8 +97,8 @@ class TaskFilteredPageState extends State<TaskFilteredPage> with SingleTickerPro
     return MyAppBar(
       context: context,
       title: Text(title),
-      elevation: isScrolled,
       titleSpacing: 0,
+      elevation: 0,
     );
   }
 }
