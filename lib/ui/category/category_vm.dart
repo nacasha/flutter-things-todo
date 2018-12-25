@@ -1,7 +1,5 @@
 import 'package:redux/redux.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/foundation.dart';
 
 import 'package:thingstodo/data/model/models.dart';
 import 'package:thingstodo/redux/app/app_state.dart';

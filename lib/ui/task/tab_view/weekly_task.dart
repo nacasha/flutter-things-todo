@@ -1,8 +1,5 @@
-import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
-import 'package:date_utils/date_utils.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:flutter_calendar/flutter_calendar.dart';
 import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 
 import 'package:thingstodo/theme/colors.dart';

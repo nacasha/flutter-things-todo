@@ -4,7 +4,7 @@ class MyCustomField extends StatefulWidget {
   final Function onTap;
   final String labelText;
   final Function validator;
-  TextEditingController controller;
+  final TextEditingController controller;
 
   MyCustomField({
     this.controller,

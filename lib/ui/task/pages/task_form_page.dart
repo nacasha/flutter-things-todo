@@ -1,14 +1,14 @@
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'package:thingstodo/theme/colors.dart';
 import 'package:thingstodo/data/model/models.dart';
-import 'package:thingstodo/ui/widget/form/form.dart';
 import 'package:thingstodo/redux/app/app_state.dart';
-import 'package:thingstodo/ui/widget/show_snack_bar.dart';
+import 'package:thingstodo/ui/widget/form/form.dart';
+import 'package:thingstodo/ui/category/category_page.dart';
 import 'package:thingstodo/ui/widget/app_bar/my_app_bar.dart';
+import 'package:thingstodo/ui/widget/notifications/show_snack_bar.dart';
 
 import '../task_vm.dart';
 
@@ -31,7 +31,10 @@ class TaskFormPageState extends State<TaskFormPage> {
   TextEditingController descriptionController;
   TextEditingController categoryController;
   CategoryModel _categoryController;
+  DateTime _dateTimeController;
   int priorityController;
+
+  DateFormat _formatDateTime = DateFormat('dd-mm-yyyy | hh:mm aa');
 
   @override
   void initState() {
@@ -39,17 +42,18 @@ class TaskFormPageState extends State<TaskFormPage> {
 
     titleController = TextEditingController();
     descriptionController = TextEditingController();
+    priorityController = 0;
     categoryController = TextEditingController(
       text: 'Uncategorized'
     );
-    dateTimeController = TextEditingController(
-      text: DateTime.now().toString()
-    );
-    priorityController = 0;
     _categoryController = CategoryModel((b) => b
       ..categoryId = '0'
       ..title = 'Uncategorized'
     );
+    dateTimeController = TextEditingController(
+      text: _formatDateTime.format(DateTime.now())
+    );
+    _dateTimeController = DateTime.now();
   }
 
   Future pickCategory() async {
@@ -79,7 +83,13 @@ class TaskFormPageState extends State<TaskFormPage> {
                 padding: EdgeInsets.only(top: 15),
                 child: SimpleDialogOption(
                   child: Text('Manage Category'),
-                  onPressed: () { },
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => CategoryPage()
+                      )
+                    );
+                  },
                 ),
               )
             );
@@ -98,11 +108,11 @@ class TaskFormPageState extends State<TaskFormPage> {
   }
 
   Future pickDateAndTime() async {
-    String value = dateTimeController.text;
+    DateTime value = _dateTimeController;
     print(value);
 
-    bool isPicked = value != '';
-    DateTime parsedValue = isPicked ? DateTime.parse(value) : null;
+    bool isPicked = value != null;
+    DateTime parsedValue = isPicked ? value : null;
 
     DateTime now = new DateTime.now();
     DateTime today = new DateTime(now.year, now.month, now.day);
@@ -141,6 +151,7 @@ class TaskFormPageState extends State<TaskFormPage> {
       String dateTime = dateTimeController.text;
       String description = descriptionController.text;
       CategoryModel category = _categoryController;
+      DateTime _dateTime = _dateTimeController;
       int priority = priorityController;
 
       DateTime now = DateTime.now();
@@ -150,7 +161,7 @@ class TaskFormPageState extends State<TaskFormPage> {
       var priorityList = TaskPriority.values;
 
       if (dateTime != '') {
-        date = DateTime.parse(dateTime).toUtc();
+        date = _dateTime.toUtc();
       }
 
       final TaskModel newTask = TaskModel((b) => b
@@ -194,78 +205,81 @@ class TaskFormPageState extends State<TaskFormPage> {
         actionButtons: ['notification'],
         elevation: 0,
       ),
-      bottomSheet: formSubmitButton(context),
+      bottomSheet: buildFormSubmitButton(context),
       backgroundColor: kBackgroundColor,
       body: SingleChildScrollView(
-        child: _form,
+        padding: EdgeInsets.only(bottom: 60),
+        child: buildTaskForm(),
       )
     );
   }
 
   /// [Form Builder]
-  Widget get _form => Form(
-    key: formKey,
-    child: Column(
-      children: <Widget>[
-        MyInputField(
-          controller: titleController,
-          labelText: 'Task Title',
-          validator: (value) {
-            if (value == '') {
-              return 'Task title cannot be null \n';
+  Widget buildTaskForm() {
+    return Form(
+      key: formKey,
+      child: Column(
+        children: <Widget>[
+          MyInputField(
+            controller: titleController,
+            labelText: 'Task Title',
+            validator: (value) {
+              if (value == '') {
+                return 'Task title cannot be null \n';
+              }
+            },
+          ),
+          MyInputField(
+            controller: descriptionController,
+            labelText: 'Description',
+            keyboardType: TextInputType.multiline,
+          ),
+          Builder(
+            builder: (BuildContext context) {
+              return MyCustomField(
+                controller: categoryController,
+                labelText: 'Category',
+                onTap: () async {
+                  pickCategory();
+                },
+              );
             }
-          },
-        ),
-        MyInputField(
-          controller: descriptionController,
-          labelText: 'Description',
-          keyboardType: TextInputType.multiline,
-        ),
-        Builder(
-          builder: (BuildContext context) {
-            return MyCustomField(
-              controller: categoryController,
-              labelText: 'Category',
-              onTap: () async {
-                pickCategory();
-              },
-            );
-          }
-        ),
-        MyCustomField(
-          controller: dateTimeController,
-          labelText: 'Date & Time',
-          onTap: () async {
-            final value = await pickDateAndTime();
+          ),
+          MyCustomField(
+            controller: dateTimeController,
+            labelText: 'Date & Time',
+            onTap: () async {
+              final value = await pickDateAndTime();
 
-            if (value != null) {
-              setState(() {
-                dateTimeController.text = value.toString();
-              });
-            }
-          },
-        ),
-        MySection(
-          text: 'Priority'
-        ),
-        MyBuilderField(
-          builder: (BuildContext context) {
-            return Container(
-              child: Row(
-                children: _buildPriorityIcon()
-              ),
-            );
-          },
-        ),
-        // MyCustomField(
-        //   labelText: 'Notifications',
-        // ),
-      ],
-    ),
-  );
+              if (value != null) {
+                setState(() {
+                  _dateTimeController = value;
+                  dateTimeController.text = _formatDateTime.format(value);
+                });
+              }
+            },
+          ),
+          MySection(
+            text: 'Priority'
+          ),
+          MyBuilderField(
+            builder: (BuildContext context) {
+              return Container(
+                child: Row(
+                  children: buildPriorityIcon()
+                ),
+              );
+            },
+          ),
+          // MyCustomField(
+          //   labelText: 'Notifications',
+          // ),
+        ],
+      ),
+    );
+  }
 
-  /// [Form Submit Button]
-  Widget formSubmitButton(BuildContext context) {
+  Widget buildFormSubmitButton(BuildContext context) {
     return SizedBox(
       height: 50,
       width: double.infinity,
@@ -287,7 +301,7 @@ class TaskFormPageState extends State<TaskFormPage> {
     );
   }
 
-  List<Widget> _buildPriorityIcon() {
+  List<Widget> buildPriorityIcon() {
     return [0, 1, 2, 3].map((index) {
       var color = [kSuccessColor, kInfoColor, kWarningColor, kErrorColor];
 
@@ -300,7 +314,7 @@ class TaskFormPageState extends State<TaskFormPage> {
           });
         },
         icon: Container(
-          margin: EdgeInsets.all(3),
+          margin: EdgeInsets.all(6),
           decoration: BoxDecoration(
             color: color[index],
             border: Border.all(

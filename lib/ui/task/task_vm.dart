@@ -1,7 +1,5 @@
 import 'package:redux/redux.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/foundation.dart';
 import 'package:built_collection/built_collection.dart';
 
 import 'package:thingstodo/data/model/models.dart';
@@ -10,6 +8,12 @@ import 'package:thingstodo/redux/task/task_actions.dart';
 import 'package:thingstodo/redux/task/task_selectors.dart';
 
 class TaskVM {
+  final BuiltList<TaskModel> tasks;
+  final BuiltList<CategoryModel> categories;
+
+  final int totalDailyTask;
+  final int totalDailyTaskDone;
+
   final Map<String, List<TaskModel>> doneTask;
   final Map<String, List<TaskModel>> laterTask;
   final Map<String, List<TaskModel>> importantTask;
@@ -18,9 +22,6 @@ class TaskVM {
   final List<TaskModel> monthlyTask;
   final Map<String, List<TaskModel>> weeklyTask;
 
-  final BuiltList<TaskModel> tasks;
-  final BuiltList<CategoryModel> categories;
-
   final Function createTask;
   final Function removeTask;
   final Function updateTask;
@@ -28,12 +29,18 @@ class TaskVM {
   TaskVM({
     @required this.tasks,
     @required this.categories,
+
+    @required this.totalDailyTask,
+    @required this.totalDailyTaskDone,
+
     @required this.doneTask,
     @required this.laterTask,
     @required this.importantTask,
+
     @required this.dailyTask,
     @required this.weeklyTask,
     @required this.monthlyTask,
+
     @required this.createTask,
     @required this.removeTask,
     @required this.updateTask,
@@ -46,6 +53,9 @@ class TaskVM {
     return TaskVM(
       tasks: state.task.tasks,
       categories: state.category.categories,
+
+      totalDailyTask: TaskSelectors(state).totalDailyTask,
+      totalDailyTaskDone: TaskSelectors(state).totalDailyTaskDone,
 
       doneTask: TaskSelectors(state).doneTask,
       laterTask: TaskSelectors(state).laterTask,

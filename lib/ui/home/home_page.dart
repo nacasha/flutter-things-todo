@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 
-import 'package:thingstodo/theme/colors.dart';
 import 'package:thingstodo/ui/task/tab_view/daily_task.dart';
-import 'package:thingstodo/ui/task/tab_view/monthly_task.dart';
 import 'package:thingstodo/ui/task/tab_view/weekly_task.dart';
-import 'package:thingstodo/ui/widget/search_bar.dart';
-import 'package:thingstodo/ui/widget/app_bar/my_sliver_app_bar.dart';
-import 'package:thingstodo/ui/widget/show_snack_bar.dart';
 import 'package:thingstodo/ui/widget/my_drawer.dart';
+import 'package:thingstodo/ui/widget/search/search_bar.dart';
+import 'package:thingstodo/ui/widget/search/search_bar_delegate.dart';
+import 'package:thingstodo/ui/widget/app_bar/my_sliver_app_bar.dart';
 
 class HomePage extends StatefulWidget {
   static final String route = '/';

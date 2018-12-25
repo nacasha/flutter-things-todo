@@ -6,16 +6,16 @@ import 'package:intl/intl.dart';
 import 'package:thingstodo/theme/colors.dart';
 import 'package:thingstodo/data/model/models.dart';
 import 'package:thingstodo/redux/app/app_state.dart';
-import 'package:thingstodo/ui/widget/show_snack_bar.dart';
+import 'package:thingstodo/ui/widget/notifications/show_snack_bar.dart';
 import 'package:thingstodo/ui/widget/builder/dismissible_background.dart';
 
 import 'task_vm.dart';
 import 'pages/task_detail_page.dart';
 
 class TaskItem extends StatelessWidget {
-  TaskItem(this.task);
-
   final TaskModel task;
+
+  TaskItem(this.task);
 
   onTaskDismissed(direction, context, TaskVM vm) {
     TaskStatus updates;
@@ -122,7 +122,7 @@ class TaskItem extends StatelessWidget {
         case TaskPriority.p4: return kErrorColor;
         default: return kSuccessColor;
       }
-    };
+    }
 
     // Priority Icon
     final priorityIcon = Padding(

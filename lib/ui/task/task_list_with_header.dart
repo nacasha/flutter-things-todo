@@ -7,10 +7,10 @@ import 'package:thingstodo/data/model/models.dart';
 import 'task_item.dart';
 
 class TaskListWithHeader extends StatelessWidget {
-  TaskListWithHeader(this.tasks, this.title);
-
   final List<TaskModel> tasks;
   final String title;
+
+  TaskListWithHeader(this.tasks, this.title);
 
   Widget build(BuildContext context) {
     return SliverStickyHeaderBuilder(

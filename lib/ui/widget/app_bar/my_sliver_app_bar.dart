@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../search_bar.dart';
-
 import 'base_app_bar.dart';
 
 class MySliverAppBar extends SliverAppBar {

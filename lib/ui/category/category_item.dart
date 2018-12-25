@@ -2,18 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-import 'package:thingstodo/theme/colors.dart';
 import 'package:thingstodo/data/model/models.dart';
 import 'package:thingstodo/redux/app/app_state.dart';
-import 'package:thingstodo/ui/widget/dialog/confirm_dialog.dart';
 import 'package:thingstodo/ui/widget/dialog/input_dialog.dart';
+import 'package:thingstodo/ui/widget/dialog/confirm_dialog.dart';
 
 import 'category_vm.dart';
 
 class CategoryItem extends StatelessWidget {
-  CategoryItem(this.category);
-
   final CategoryModel category;
+
+  CategoryItem(this.category);
 
   onCategoryPressed() {
     print('pressed');
@@ -82,7 +81,6 @@ class CategoryItem extends StatelessWidget {
   }
 
   Widget buildListTile(context, vm) {
-    // List Tile
     return ListTile(
       contentPadding: EdgeInsets.only(left: 17, right: 7),
       title: Text(category.title),

@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:built_collection/built_collection.dart';
 
 import 'package:thingstodo/theme/colors.dart';
-import 'package:thingstodo/data/model/models.dart';
 import 'package:thingstodo/redux/app/app_state.dart';
-import 'package:thingstodo/ui/widget/app_bar/my_sliver_app_bar.dart';
 
 import '../task_vm.dart';
 import '../task_item.dart';

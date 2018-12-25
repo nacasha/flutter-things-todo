@@ -1,5 +1,4 @@
 import 'package:intl/intl.dart';
-import 'package:redux/redux.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -9,8 +8,8 @@ import 'package:thingstodo/data/model/models.dart';
 import 'package:thingstodo/redux/app/app_state.dart';
 import 'package:thingstodo/ui/widget/app_bar/my_app_bar.dart';
 import 'package:thingstodo/ui/widget/builder/task_badge.dart';
-import 'package:thingstodo/ui/widget/show_snack_bar.dart';
 import 'package:thingstodo/ui/widget/dialog/confirm_dialog.dart';
+import 'package:thingstodo/ui/widget/notifications/show_snack_bar.dart';
 
 import '../task_vm.dart';
 
@@ -235,14 +234,13 @@ class TaskDetailPageState extends State<TaskDetailPage> {
               text: '$date\n',
               style: TextStyle(
                 color: Colors.grey.shade600,
-                height: 1.7
+                height: 1.7,
               )
             ),
             TextSpan(
-              text: '$description\n',
+              text: '\n$description\n\n',
               style: TextStyle(
                 color: Colors.grey.shade800,
-                height: 1.7
               )
             ),
             TextSpan(
@@ -281,7 +279,7 @@ class TaskDetailPageState extends State<TaskDetailPage> {
                 tooltip: 'Delete Task',
                 icon: Icon(
                   FontAwesomeIcons.trash,
-                  color: Colors.grey.shade800,
+                  color: Colors.grey.shade600,
                 ),
                 onPressed: () {
                   onTrashAction(context, task, vm);
@@ -291,7 +289,7 @@ class TaskDetailPageState extends State<TaskDetailPage> {
                 tooltip: 'Edit Task',
                 icon: Icon(
                   FontAwesomeIcons.pencilAlt,
-                  color: Colors.grey.shade800,
+                  color: Colors.grey.shade600,
                 ),
                 onPressed: () {
                   onEditAction(context, task, vm);
@@ -301,7 +299,7 @@ class TaskDetailPageState extends State<TaskDetailPage> {
                 tooltip: 'Mark as Later',
                 icon: Icon(
                   FontAwesomeIcons.clock,
-                  color: isLater ? kErrorColor : Colors.grey.shade800,
+                  color: isLater ? kErrorColor : Colors.grey.shade600,
                 ),
                 onPressed: () {
                   onLaterAction(context, task, vm);
@@ -311,7 +309,7 @@ class TaskDetailPageState extends State<TaskDetailPage> {
                 tooltip: 'Mark as Done',
                 icon: Icon(
                   FontAwesomeIcons.calendarCheck,
-                  color: isDone ? kSuccessColor : Colors.grey.shade800,
+                  color: isDone ? kSuccessColor : Colors.grey.shade600,
                 ),
                 onPressed: () {
                   onDoneAction(context, task, vm);

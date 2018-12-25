@@ -4,7 +4,7 @@ class MyBuilderField extends StatefulWidget {
   final Function onTap;
   final Function builder;
   final String initialText;
-  TextEditingController controller;
+  final TextEditingController controller;
 
   MyBuilderField({
     this.onTap,
@@ -18,16 +18,18 @@ class MyBuilderField extends StatefulWidget {
 }
 
 class MyBuilderFieldState extends State<MyBuilderField> {
+  TextEditingController _controller;
+
   @override
   void initState() {
     super.initState();
-    widget.controller = new TextEditingController(
+    _controller = new TextEditingController(
       text: widget.initialText
     );
   }
 
   changeValue(value) {
-    widget.controller.text = value;
+    _controller.text = value;
   }
 
   Widget build(BuildContext context) {

@@ -7,11 +7,11 @@ import 'package:intl/intl.dart';
 import 'package:built_collection/built_collection.dart';
 
 class TaskSelectors {
-  final AppState state;
-
   TaskSelectors(this.state) {
     _tasks = state.task.tasks;
   }
+
+  final AppState state;
 
   BuiltList<TaskModel> _tasks;
 
@@ -35,7 +35,7 @@ class TaskSelectors {
     return tasks;
   }
 
-  final groupTask = memo1((List<TaskModel> tasks) =>
+  final _groupTask = memo1((List<TaskModel> tasks) =>
     groupBy(tasks, (TaskModel task) => (
       DateFormat('dd MMMM').format(task.date.toLocal())
     ))
@@ -51,7 +51,7 @@ class TaskSelectors {
     final List<TaskModel> result = build(_tasks);
     final List<TaskModel> sortedTask = _sortTask(result);
 
-    return groupTask(sortedTask);
+    return _groupTask(sortedTask);
   }
 
   get laterTask {
@@ -62,7 +62,7 @@ class TaskSelectors {
     final List<TaskModel> result = build(_tasks);
     final List<TaskModel> sortedTask = _sortTask(result);
 
-    return groupTask(sortedTask);
+    return _groupTask(sortedTask);
   }
 
   get importantTask {
@@ -73,7 +73,41 @@ class TaskSelectors {
     final List<TaskModel> result = build(_tasks);
     final List<TaskModel> sortedTask = _sortTask(result);
 
-    return groupTask(sortedTask);
+    return _groupTask(sortedTask);
+  }
+
+  get totalDailyTask {
+    final today = DateTime.now().toLocal();
+
+    final build = memo2((tasks, today) {
+      return tasks.where(
+        (task) => (
+          !_isLater(task) &&
+          Utils.isSameDay(task.date.toLocal(), today)
+        )
+      ).toList();
+    });
+
+    final List<TaskModel> result = build(_tasks, today);
+
+    return result.length;
+  }
+
+  get totalDailyTaskDone {
+    final today = DateTime.now().toLocal();
+
+    final build = memo2((tasks, today) {
+      return tasks.where(
+        (task) => (
+          _isDone(task) &&
+          Utils.isSameDay(task.date.toLocal(), today)
+        )
+      ).toList();
+    });
+
+    final List<TaskModel> result = build(_tasks, today);
+
+    return result.length;
   }
 
   get dailyTask {
@@ -83,7 +117,7 @@ class TaskSelectors {
       return tasks.where(
         (task) => (
           _isActive(task) &&
-          (Utils.isSameDay(task.date.toLocal(), today))
+          Utils.isSameDay(task.date.toLocal(), today)
         )
       ).toList();
     });
@@ -106,7 +140,7 @@ class TaskSelectors {
     final List<TaskModel> result = build(_tasks, date);
     final List<TaskModel> sortedTask = _sortTask(result);
 
-    return groupTask(sortedTask);
+    return _groupTask(sortedTask);
   }
 
   get monthlyTask {

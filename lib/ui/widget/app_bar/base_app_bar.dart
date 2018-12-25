@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:thingstodo/ui/widget/search/search_bar.dart';
 import 'package:thingstodo/ui/task/pages/task_form_page.dart';
-
-import '../search_bar.dart';
 
 /// [BaseAppBar] contains all default values and default builder
 /// for [MyAppBar] and [MySliverAppbar] to maintain consistency

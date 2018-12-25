@@ -3,7 +3,6 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
 
 import 'theme/theme.dart';
-import 'config/routes.dart';
 import 'ui/home/home_page.dart';
 import 'redux/app/app_state.dart';
 

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 
-import 'package:thingstodo/theme/colors.dart';
 import 'package:thingstodo/data/model/models.dart';
 import 'package:thingstodo/redux/app/app_state.dart';
 import 'package:thingstodo/ui/widget/app_bar/my_app_bar.dart';
@@ -14,9 +13,7 @@ class TaskFilteredPage extends StatefulWidget {
 
   final String filterType;
 
-  TaskFilteredPage({
-    this.filterType
-  });
+  TaskFilteredPage({ this.filterType });
 
   @override
   TaskFilteredPageState createState() => TaskFilteredPageState();

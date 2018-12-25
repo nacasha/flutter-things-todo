@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:redux/redux.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'package:thingstodo/data/model/models.dart';
 import 'package:thingstodo/redux/app/app_state.dart';
-import 'package:thingstodo/ui/widget/dialog/confirm_dialog.dart';
 import 'package:thingstodo/ui/widget/dialog/input_dialog.dart';
 
 import 'category_item.dart';
@@ -19,7 +16,7 @@ class CategoryPage extends StatefulWidget {
 }
 
 class CategoryPageState extends State<CategoryPage> with SingleTickerProviderStateMixin {
-  addNewCategory(title) {
+  onAddNewCategory(title) {
     final store = StoreProvider.of<AppState>(context);
     final vm = CategoryVM.fromStore(store);
 
@@ -41,7 +38,6 @@ class CategoryPageState extends State<CategoryPage> with SingleTickerProviderSta
   }
 
   Widget build(BuildContext context) {
-    // build
     return Scaffold(
       appBar: buildAppBar(context),
       body: connector(
@@ -77,7 +73,7 @@ class CategoryPageState extends State<CategoryPage> with SingleTickerProviderSta
                   title: 'New Category',
                   confirmText: Text('ADD'),
                   confirmOnTap: (value) {
-                    addNewCategory(value);
+                    onAddNewCategory(value);
                     Navigator.of(context).pop();
                   },
                 );
