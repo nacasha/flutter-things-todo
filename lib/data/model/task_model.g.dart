@@ -27,8 +27,8 @@ class _$TaskModelSerializer implements StructuredSerializer<TaskModel> {
       'description',
       serializers.serialize(object.description,
           specifiedType: const FullType(String)),
-      'category',
-      serializers.serialize(object.category,
+      'categoryId',
+      serializers.serialize(object.categoryId,
           specifiedType: const FullType(String)),
       'important',
       serializers.serialize(object.important,
@@ -70,8 +70,8 @@ class _$TaskModelSerializer implements StructuredSerializer<TaskModel> {
           result.description = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
           break;
-        case 'category':
-          result.category = serializers.deserialize(value,
+        case 'categoryId':
+          result.categoryId = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
           break;
         case 'important':
@@ -105,7 +105,7 @@ class _$TaskModel extends TaskModel {
   @override
   final String description;
   @override
-  final String category;
+  final String categoryId;
   @override
   final bool important;
   @override
@@ -122,7 +122,7 @@ class _$TaskModel extends TaskModel {
       {this.taskId,
       this.title,
       this.description,
-      this.category,
+      this.categoryId,
       this.important,
       this.status,
       this.priority,
@@ -137,8 +137,8 @@ class _$TaskModel extends TaskModel {
     if (description == null) {
       throw new BuiltValueNullFieldError('TaskModel', 'description');
     }
-    if (category == null) {
-      throw new BuiltValueNullFieldError('TaskModel', 'category');
+    if (categoryId == null) {
+      throw new BuiltValueNullFieldError('TaskModel', 'categoryId');
     }
     if (important == null) {
       throw new BuiltValueNullFieldError('TaskModel', 'important');
@@ -168,7 +168,7 @@ class _$TaskModel extends TaskModel {
         taskId == other.taskId &&
         title == other.title &&
         description == other.description &&
-        category == other.category &&
+        categoryId == other.categoryId &&
         important == other.important &&
         status == other.status &&
         priority == other.priority &&
@@ -184,7 +184,7 @@ class _$TaskModel extends TaskModel {
                     $jc(
                         $jc($jc($jc(0, taskId.hashCode), title.hashCode),
                             description.hashCode),
-                        category.hashCode),
+                        categoryId.hashCode),
                     important.hashCode),
                 status.hashCode),
             priority.hashCode),
@@ -197,7 +197,7 @@ class _$TaskModel extends TaskModel {
           ..add('taskId', taskId)
           ..add('title', title)
           ..add('description', description)
-          ..add('category', category)
+          ..add('categoryId', categoryId)
           ..add('important', important)
           ..add('status', status)
           ..add('priority', priority)
@@ -221,9 +221,9 @@ class TaskModelBuilder implements Builder<TaskModel, TaskModelBuilder> {
   String get description => _$this._description;
   set description(String description) => _$this._description = description;
 
-  String _category;
-  String get category => _$this._category;
-  set category(String category) => _$this._category = category;
+  String _categoryId;
+  String get categoryId => _$this._categoryId;
+  set categoryId(String categoryId) => _$this._categoryId = categoryId;
 
   bool _important;
   bool get important => _$this._important;
@@ -248,7 +248,7 @@ class TaskModelBuilder implements Builder<TaskModel, TaskModelBuilder> {
       _taskId = _$v.taskId;
       _title = _$v.title;
       _description = _$v.description;
-      _category = _$v.category;
+      _categoryId = _$v.categoryId;
       _important = _$v.important;
       _status = _$v.status;
       _priority = _$v.priority;
@@ -278,7 +278,7 @@ class TaskModelBuilder implements Builder<TaskModel, TaskModelBuilder> {
             taskId: taskId,
             title: title,
             description: description,
-            category: category,
+            categoryId: categoryId,
             important: important,
             status: status,
             priority: priority,

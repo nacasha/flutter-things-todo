@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:built_collection/built_collection.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'package:thingstodo/data/model/models.dart';
 import 'package:thingstodo/redux/app/app_state.dart';
@@ -27,31 +28,31 @@ class MonthlyTaskViewState extends State<MonthlyTaskView> {
 
         return CustomScrollView(
           slivers: <Widget>[
-            SliverToBoxAdapter(
+            SliverFillRemaining(
               child: Container(
+                constraints: BoxConstraints.expand(),
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    Text(
-                      'You have clicke this many times'
+                    Padding(
+                      padding: EdgeInsets.only(bottom: 25),
+                      child: Icon(
+                        FontAwesomeIcons.userAstronaut,
+                        color: Colors.grey.shade600,
+                        size: 100,
+                      ),
                     ),
-                    RaisedButton(
-                      onPressed: () {
-                        final taskId = DateTime.now().millisecondsSinceEpoch;
-
-                        vm.createTask(
-                          TaskModel((b) => b
-                            ..taskId = '$taskId'
-                            ..title = 'Jalan - jalan'
-                            ..description = 'Sama kinol'
-                            ..date = DateTime.now().toUtc()
-                            ..category = 'Family'
-                            ..status = TaskStatus.active
-                            ..priority = TaskPriority.p1
-                            ..important = false
-                          )
-                        );
-                      },
-                      child: Text('Click me'),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 20),
+                      child: Text(
+                        'Our developers are still working on it',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 17,
+                          color: Colors.grey.shade700,
+                        ),
+                      ),
                     )
                   ],
                 )

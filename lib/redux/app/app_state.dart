@@ -20,7 +20,7 @@ abstract class AppState implements Built<AppState, AppStateBuilder> {
   static filterPersistedState(_$AppState state) => (
     state.rebuild((b) => b
       ..calendar = CalendarStateBuilder()
-      // ..task = TaskState().toBuilder()
+      // ..task = TaskStateBuilder()
     )
   );
 }

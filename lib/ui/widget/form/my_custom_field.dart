@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 class MyCustomField extends StatefulWidget {
   final Function onTap;
   final String labelText;
-  final String initialText;
   final Function validator;
   TextEditingController controller;
 
@@ -12,7 +11,6 @@ class MyCustomField extends StatefulWidget {
     this.onTap,
     this.labelText,
     this.validator,
-    this.initialText = ''
   });
 
   @override
@@ -20,14 +18,6 @@ class MyCustomField extends StatefulWidget {
 }
 
 class MyCustomFieldState extends State<MyCustomField> {
-  @override
-  void initState() {
-    super.initState();
-    widget.controller = new TextEditingController(
-      text: widget.initialText
-    );
-  }
-
   changeValue(value) {
     widget.controller.text = value;
   }

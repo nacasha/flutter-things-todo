@@ -27,7 +27,7 @@ class HomePageState extends State<HomePage> with SingleTickerProviderStateMixin 
     isScrolled = false;
     tabController = new TabController(
       vsync: this,
-      length: 3
+      length: 2
     );
   }
 
@@ -91,7 +91,7 @@ class HomePageState extends State<HomePage> with SingleTickerProviderStateMixin 
                     children: <Widget>[
                       tabbarViewBuilder(DailyTaskView()),
                       tabbarViewBuilder(WeeklyTaskView()),
-                      tabbarViewBuilder(MonthlyTaskView()),
+                      // tabbarViewBuilder(MonthlyTaskView()),
                     ],
                   ),
                 )
@@ -117,7 +117,7 @@ class HomePageState extends State<HomePage> with SingleTickerProviderStateMixin 
             tabs: <Widget>[
               Tab(text: 'DAILY'),
               Tab(text: 'WEEKLY'),
-              Tab(text: 'MONTHLY'),
+              // Tab(text: 'MONTHLY'),
             ],
           )
         ],

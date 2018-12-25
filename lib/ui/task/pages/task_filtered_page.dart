@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:flutter_sticky_header/flutter_sticky_header.dart';
 
 import 'package:thingstodo/theme/colors.dart';
 import 'package:thingstodo/data/model/models.dart';
 import 'package:thingstodo/redux/app/app_state.dart';
 import 'package:thingstodo/ui/widget/app_bar/my_app_bar.dart';
-import 'package:thingstodo/ui/widget/my_drawer.dart';
 
 import '../task_list_with_header.dart';
-import '../task_item.dart';
 import '../task_vm.dart';
 
 class TaskFilteredPage extends StatefulWidget {
@@ -26,8 +23,6 @@ class TaskFilteredPage extends StatefulWidget {
 }
 
 class TaskFilteredPageState extends State<TaskFilteredPage> {
-  TabController tabController;
-
   Widget connector({ builder }) {
     return StoreConnector<AppState, TaskVM>(
       converter: TaskVM.fromStore,

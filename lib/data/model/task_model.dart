@@ -12,7 +12,7 @@ abstract class TaskModel implements Built<TaskModel, TaskModelBuilder> {
   String get taskId;
   String get title;
   String get description;
-  String get category;
+  String get categoryId;
   bool get important;
   TaskStatus get status;
   TaskPriority get priority;

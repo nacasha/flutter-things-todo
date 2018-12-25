@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'package:thingstodo/theme/colors.dart';
+import 'package:thingstodo/ui/category/category_page.dart';
 import 'package:thingstodo/ui/task/pages/task_form_page.dart';
 import 'package:thingstodo/ui/task/pages/task_filtered_page.dart';
 
@@ -64,19 +65,21 @@ class MyDrawer extends StatelessWidget {
           title: 'Category',
           onTap: () {
             Navigator.of(context).pop();
-            Navigator.of(context).pushNamed('/category');
+            Navigator.of(context).push(
+              MaterialPageRoute(builder: (ctx) => CategoryPage()),
+            );
           },
         ),
-        buildListTile(
-          icon: FontAwesomeIcons.cog,
-          title: 'Settings',
-          onTap: () {},
-        ),
-        buildListTile(
-          icon: FontAwesomeIcons.signOutAlt,
-          title: 'Logout',
-          onTap: () {}
-        )
+        // buildListTile(
+        //   icon: FontAwesomeIcons.cog,
+        //   title: 'Settings',
+        //   onTap: () {},
+        // ),
+        // buildListTile(
+        //   icon: FontAwesomeIcons.signOutAlt,
+        //   title: 'Logout',
+        //   onTap: () {}
+        // )
       ],
     );
   }
@@ -104,7 +107,7 @@ class MyDrawer extends StatelessWidget {
               ),
             ),
             Text(
-              'Izal Fathoni',
+              'Things Todo',
               style: TextStyle(
                 fontSize: 17,
                 color: Colors.white,

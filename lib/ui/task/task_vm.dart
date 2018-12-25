@@ -2,6 +2,7 @@ import 'package:redux/redux.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
+import 'package:built_collection/built_collection.dart';
 
 import 'package:thingstodo/data/model/models.dart';
 import 'package:thingstodo/redux/app/app_state.dart';
@@ -17,11 +18,16 @@ class TaskVM {
   final List<TaskModel> monthlyTask;
   final Map<String, List<TaskModel>> weeklyTask;
 
+  final BuiltList<TaskModel> tasks;
+  final BuiltList<CategoryModel> categories;
+
   final Function createTask;
   final Function removeTask;
   final Function updateTask;
 
   TaskVM({
+    @required this.tasks,
+    @required this.categories,
     @required this.doneTask,
     @required this.laterTask,
     @required this.importantTask,
@@ -38,6 +44,9 @@ class TaskVM {
     final dispatch = store.dispatch;
 
     return TaskVM(
+      tasks: state.task.tasks,
+      categories: state.category.categories,
+
       doneTask: TaskSelectors(state).doneTask,
       laterTask: TaskSelectors(state).laterTask,
       importantTask: TaskSelectors(state).importantTask,

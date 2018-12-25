@@ -26,11 +26,76 @@ class TaskFormPage extends StatefulWidget {
 class TaskFormPageState extends State<TaskFormPage> {
   final formKey = GlobalKey<FormState>();
 
-  TextEditingController titleController = TextEditingController();
-  TextEditingController categoryController = TextEditingController();
-  TextEditingController dateTimeController = TextEditingController();
-  TextEditingController descriptionController = TextEditingController();
-  int priorityController = 0;
+  TextEditingController titleController;
+  TextEditingController dateTimeController;
+  TextEditingController descriptionController;
+  TextEditingController categoryController;
+  CategoryModel _categoryController;
+  int priorityController;
+
+  @override
+  void initState() {
+    super.initState();
+
+    titleController = TextEditingController();
+    descriptionController = TextEditingController();
+    categoryController = TextEditingController(
+      text: 'Uncategorized'
+    );
+    dateTimeController = TextEditingController(
+      text: DateTime.now().toString()
+    );
+    priorityController = 0;
+    _categoryController = CategoryModel((b) => b
+      ..categoryId = '0'
+      ..title = 'Uncategorized'
+    );
+  }
+
+  Future pickCategory() async {
+    await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return connector(
+          builder: (BuildContext context, TaskVM vm) {
+            List<Widget> children = [];
+
+            vm.categories.forEach((category) => (
+              children.add(
+                SimpleDialogOption(
+                  child: Text(category.title),
+                  onPressed: () {
+                    categoryController.text = category.title;
+                    _categoryController = category;
+
+                    Navigator.of(context).pop();
+                  },
+                )
+              )
+            ));
+
+            children.add(
+              Padding(
+                padding: EdgeInsets.only(top: 15),
+                child: SimpleDialogOption(
+                  child: Text('Manage Category'),
+                  onPressed: () { },
+                ),
+              )
+            );
+
+            return SimpleDialog(
+              title: const Text('Select category'),
+              contentPadding: EdgeInsets.symmetric(
+                vertical: 20
+              ),
+              children: children
+            );
+          }
+        );
+      }
+    );
+  }
 
   Future pickDateAndTime() async {
     String value = dateTimeController.text;
@@ -74,8 +139,8 @@ class TaskFormPageState extends State<TaskFormPage> {
     if (formKey.currentState.validate()) {
       String taskName = titleController.text;
       String dateTime = dateTimeController.text;
-      String category = categoryController.text;
       String description = descriptionController.text;
+      CategoryModel category = _categoryController;
       int priority = priorityController;
 
       DateTime now = DateTime.now();
@@ -92,7 +157,7 @@ class TaskFormPageState extends State<TaskFormPage> {
         ..taskId = '$taskId'
         ..date = date
         ..title = taskName
-        ..category = category
+        ..categoryId = category.categoryId
         ..priority = priorityList.elementAt(priority)
         ..status = TaskStatus.active
         ..description = description
@@ -112,6 +177,13 @@ class TaskFormPageState extends State<TaskFormPage> {
         backgroundColor: kSuccessColor,
       );
     }
+  }
+
+  Widget connector({ builder }) {
+    return StoreConnector<AppState, TaskVM>(
+      converter: TaskVM.fromStore,
+      builder: builder
+    );
   }
 
   Widget build(BuildContext context) {
@@ -155,46 +227,7 @@ class TaskFormPageState extends State<TaskFormPage> {
               controller: categoryController,
               labelText: 'Category',
               onTap: () async {
-                await showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return SimpleDialog(
-                      title: const Text('Select category'),
-                      contentPadding: EdgeInsets.symmetric(
-                        vertical: 20
-                      ),
-                      children: <Widget>[
-                        SimpleDialogOption(
-                          child: const Text('Uncategorized'),
-                          onPressed: () {  },
-                        ),
-                        SimpleDialogOption(
-                          child: const Text('Family'),
-                          onPressed: () { },
-                        ),
-                        SimpleDialogOption(
-                          child: const Text('Office'),
-                          onPressed: () { },
-                        ),
-                        SimpleDialogOption(
-                          child: const Text('Vacation'),
-                          onPressed: () { },
-                        ),
-                        SimpleDialogOption(
-                          child: const Text('Health'),
-                          onPressed: () { },
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(top: 15),
-                          child: SimpleDialogOption(
-                            child: Text('Add new category'),
-                            onPressed: () { },
-                          ),
-                        )
-                      ],
-                    );
-                  }
-                );
+                pickCategory();
               },
             );
           }
@@ -279,40 +312,5 @@ class TaskFormPageState extends State<TaskFormPage> {
         )
       );
     }).toList();
-  }
-
-  Widget pickCategory(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border(top: BorderSide(color: Colors.grey.shade300)),
-        boxShadow: [
-          BoxShadow(
-            blurRadius: 1,
-            color: Colors.grey.shade200,
-          )
-        ]
-      ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          new ListTile(
-            leading: new Icon(Icons.music_note),
-            title: new Text('Music'),
-            onTap: () => () {}
-          ),
-          new ListTile(
-            leading: new Icon(Icons.photo_album),
-            title: new Text('Photos'),
-            onTap: () => () {}
-          ),
-          new ListTile(
-            leading: new Icon(Icons.videocam),
-            title: new Text('Video'),
-            onTap: () => () {}
-          ),
-        ],
-      ),
-    );
   }
 }

@@ -1,3 +1,7 @@
+/**
+ * This file is not being used until Navigator able to to pass
+ * parameters when using pushNamed()
+ */
 import 'package:flutter/material.dart';
 
 import 'package:thingstodo/ui/home/home_page.dart';
@@ -11,4 +15,5 @@ final Map<String, WidgetBuilder> routes = {
   TaskFormPage.route: (context) => TaskFormPage(),
   TaskFilteredPage.route: (context) => TaskFilteredPage(),
   CategoryPage.route: (context) => CategoryPage(),
+  TaskDetailPage.route: (context) => TaskDetailPage(),
 };

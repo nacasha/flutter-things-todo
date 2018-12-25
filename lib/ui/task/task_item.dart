@@ -10,6 +10,7 @@ import 'package:thingstodo/ui/widget/show_snack_bar.dart';
 import 'package:thingstodo/ui/widget/builder/dismissible_background.dart';
 
 import 'task_vm.dart';
+import 'pages/task_detail_page.dart';
 
 class TaskItem extends StatelessWidget {
   TaskItem(this.task);
@@ -28,7 +29,7 @@ class TaskItem extends StatelessWidget {
         updates = TaskStatus.done;
         break;
       case DismissDirection.endToStart:
-        snackbarContent = Text('Marked eas Later');
+        snackbarContent = Text('Marked as Later');
         snackbarColor = kErrorColor;
         updates = TaskStatus.later;
         break;
@@ -51,8 +52,15 @@ class TaskItem extends StatelessWidget {
     ));
   }
 
-  onTaskPressed() {
-    print('pressed');
+  onTaskPressed(context) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (ctx) => TaskDetailPage(
+          task: task,
+          previousContext: context,
+        )
+      )
+    );
   }
 
   Widget build(BuildContext context) {
@@ -92,7 +100,7 @@ class TaskItem extends StatelessWidget {
             onTaskDismissed(direction, context, vm);
           },
           child: InkWell(
-            onTap: onTaskPressed,
+            onTap: () { onTaskPressed(context); },
             child: Container(
               decoration: BoxDecoration(border: Border(
                 bottom: BorderSide(color: Colors.grey.shade300)
@@ -105,7 +113,7 @@ class TaskItem extends StatelessWidget {
     );
   }
 
-  Widget buildListTile(vm) {
+  Widget buildListTile(TaskVM vm) {
     Color iconColor(priority) {
       switch (priority) {
         case TaskPriority.p1: return kSuccessColor;
@@ -162,9 +170,18 @@ class TaskItem extends StatelessWidget {
       ),
     );
 
+    final CategoryModel category = vm.categories.firstWhere((category) => (
+      category.categoryId == task.categoryId
+    ), orElse: ()  => (
+      CategoryModel((b) => b
+        ..categoryId = '0'
+        ..title = 'Uncategorized'
+      )
+    ));
+
     // List Tile
     return ListTile(
-      subtitle: Text('Uncategorized'),
+      subtitle: Text(category.title),
       title: Text(task.title),
       leading: dateTime,
       trailing: Row(
