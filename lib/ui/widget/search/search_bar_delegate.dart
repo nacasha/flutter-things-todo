@@ -4,7 +4,6 @@ import 'package:flutter_redux/flutter_redux.dart';
 
 import 'package:thingstodo/redux/app/app_state.dart';
 import 'package:thingstodo/data/model/models.dart';
-import 'package:thingstodo/ui/home/home_page.dart';
 import 'package:thingstodo/ui/task/task_item.dart';
 import 'package:thingstodo/ui/task/pages/task_detail_page.dart';
 

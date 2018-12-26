@@ -1,8 +1,6 @@
 import 'package:intl/intl.dart';
-import 'package:redux/redux.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:built_collection/built_collection.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'package:thingstodo/theme/colors.dart';
@@ -29,14 +27,6 @@ class TaskDetailPage extends StatefulWidget {
 }
 
 class TaskDetailPageState extends State<TaskDetailPage> {
-  @override
-  didChangeDependencies() {
-    super.didChangeDependencies();
-
-    final Store<AppState> store = StoreProvider.of<AppState>(context);
-    final TaskVM vm = TaskVM.fromStore(store);
-  }
-
   onTrashAction(context, task, TaskVM vm) {
     showDialog(
       context: context,
