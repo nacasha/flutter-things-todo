@@ -1,12 +1,13 @@
 # Flutter Things Todo
 
-An example Todo App using Flutter with advanced features. :star2:
+An example Todo App using Flutter with advanced features. :star2:  
+Built using Redux architecture and Redux Persist to store redux state.
 
 ## UI/UX Concept by Md. Faisal Hossain
-Thanks to Md. Faisal Hossain for allowing me to use the ThingsTodo concept.
+Thanks to Md. Faisal Hossain for allowing me to use the ThingsTodo concept.  
 Visit his profile for more awesome works!
 
-Uplabs Profile : [Md. Faisal Hossain](https://www.uplabs.com/mdfhossain)
+Uplabs Profile : [Md. Faisal Hossain](https://www.uplabs.com/mdfhossain)  
 Things Todo Concept : [Things Todo App](https://www.uplabs.com/posts/freebie-daily-ui-things-todo-app)
 
 ## Features
@@ -40,19 +41,36 @@ The architecture is based off these projects:
   <table>
     <tr>
       <td style="text-align: center">
-        <img src="./screenshots/ss01.png" width="200" />
+        <img src="./screenshots/1.png" width="200" />
       </td>
       <td style="text-align: center">
-        <img src="./screenshots/ss02.png" width="200" />
+        <img src="./screenshots/2.png" width="200" />
       </td>
       <td style="text-align: center">
-        <img src="./screenshots/ss03.png" width="200" />
+        <img src="./screenshots/3.png" width="200" />
       </td>
       <td style="text-align: center">
-        <img src="./screenshots/ss04.png" width="200" />
+        <img src="./screenshots/4.png" width="200" />
       </td>
       <td style="text-align: center">
-        <img src="./screenshots/ss05.png" width="200" />
+        <img src="./screenshots/5.png" width="200" />
+      </td>
+    </tr>
+    <tr>
+      <td style="text-align: center">
+        <img src="./screenshots/6.png" width="200" />
+      </td>
+      <td style="text-align: center">
+        <img src="./screenshots/7.png" width="200" />
+      </td>
+      <td style="text-align: center">
+        <img src="./screenshots/8.png" width="200" />
+      </td>
+      <td style="text-align: center">
+        <img src="./screenshots/9.png" width="200" />
+      </td>
+      <td style="text-align: center">
+        <img src="./screenshots/5.png" width="200" />
       </td>
     </tr>
   </table>

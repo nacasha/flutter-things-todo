@@ -7,6 +7,7 @@ import 'ui/home/home_page.dart';
 import 'redux/app/app_state.dart';
 
 
+
 class ThingsTodo extends StatefulWidget {
   final Store<AppState> store;
 
@@ -27,6 +28,7 @@ class ThingsTodoState extends State<ThingsTodo> {
     return StoreProvider<AppState>(
       store: widget.store,
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         theme: theme,
         home: HomePage(),
       ),
