@@ -1,6 +1,8 @@
 import 'package:intl/intl.dart';
+import 'package:redux/redux.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:built_collection/built_collection.dart';
 
 import 'package:thingstodo/theme/colors.dart';
 import 'package:thingstodo/data/model/models.dart';
@@ -16,8 +18,9 @@ class TaskFormPage extends StatefulWidget {
   static final String route = '/task-form';
 
   final BuildContext previousContext;
+  final TaskModel task;
 
-  TaskFormPage({ this.previousContext });
+  TaskFormPage({ this.previousContext, this.task });
 
   @override
   TaskFormPageState createState() => TaskFormPageState();
@@ -28,32 +31,50 @@ class TaskFormPageState extends State<TaskFormPage> {
 
   TextEditingController titleController;
   TextEditingController dateTimeController;
-  TextEditingController descriptionController;
   TextEditingController categoryController;
+  TextEditingController descriptionController;
   CategoryModel _categoryController;
   DateTime _dateTimeController;
-  int priorityController;
+  String priorityController;
 
   DateFormat _formatDateTime = DateFormat('dd-mm-yyyy | hh:mm aa');
 
   @override
-  void initState() {
-    super.initState();
+  didChangeDependencies() {
+    super.didChangeDependencies();
 
-    titleController = TextEditingController();
-    descriptionController = TextEditingController();
-    priorityController = 0;
-    categoryController = TextEditingController(
-      text: 'Uncategorized'
+    final Store<AppState> store = StoreProvider.of<AppState>(context);
+    final TaskVM vm = TaskVM.fromStore(store);
+
+    final BuiltList<CategoryModel> categories = vm.categories;
+    final TaskModel task = widget.task;
+
+    titleController = TextEditingController(
+      text: task?.title ?? ''
     );
-    _categoryController = CategoryModel((b) => b
+    descriptionController = TextEditingController(
+      text: task?.description ?? ''
+    );
+
+    priorityController = task?.priority?.name ?? 'p1';
+
+    var initialCategory = categories.firstWhere((category) => (
+      category.categoryId == task?.categoryId
+    ), orElse: () => CategoryModel((b) => b
       ..categoryId = '0'
       ..title = 'Uncategorized'
+    ));
+
+    categoryController = TextEditingController(
+      text: initialCategory.title
     );
+    _categoryController = initialCategory;
+
+    var initialDate = task?.date?.toLocal() ?? DateTime.now().toLocal();
     dateTimeController = TextEditingController(
-      text: _formatDateTime.format(DateTime.now())
+      text: _formatDateTime.format(initialDate)
     );
-    _dateTimeController = DateTime.now();
+    _dateTimeController = initialDate;
   }
 
   Future pickCategory() async {
@@ -147,12 +168,12 @@ class TaskFormPageState extends State<TaskFormPage> {
 
   handleSubmitButton(context, TaskVM vm) {
     if (formKey.currentState.validate()) {
-      String taskName = titleController.text;
+      String title = titleController.text;
       String dateTime = dateTimeController.text;
       String description = descriptionController.text;
       CategoryModel category = _categoryController;
       DateTime _dateTime = _dateTimeController;
-      int priority = priorityController;
+      String priority = priorityController;
 
       DateTime now = DateTime.now();
 
@@ -164,27 +185,39 @@ class TaskFormPageState extends State<TaskFormPage> {
         date = _dateTime.toUtc();
       }
 
-      final TaskModel newTask = TaskModel((b) => b
-        ..taskId = '$taskId'
-        ..date = date
-        ..title = taskName
-        ..categoryId = category.categoryId
-        ..priority = priorityList.elementAt(priority)
-        ..status = TaskStatus.active
-        ..description = description
-        ..important = false
-      );
+      Widget snackbarContent;
+      if (widget.task == null) {
+        final TaskModel newTask = TaskModel((b) => b
+          ..taskId = '$taskId'
+          ..date = date
+          ..title = title
+          ..categoryId = category.categoryId
+          ..priority = priorityList.firstWhere((p) => p.name == priority)
+          ..status = TaskStatus.active
+          ..description = description
+          ..important = false
+        );
 
-      // Create new task
-      vm.createTask(newTask);
+        vm.createTask(newTask);
+        snackbarContent = Text('New task added');
+      } else {
+        final TaskModel updates = widget.task.rebuild((b) => b
+          ..date = date
+          ..title = title
+          ..categoryId = category.categoryId
+          ..priority = priorityList.firstWhere((p) => p.name == priority)
+          ..description = description
+        );
 
-      // Pop to previous page
+        vm.updateTask(widget.task, updates);
+        snackbarContent = Text('Task updates');
+      }
+
       Navigator.of(context).pop();
 
-      // Show snackbar in privous scaffold
       showSnackBar(
         context: widget.previousContext,
-        content: Text('New Task Added'),
+        content: snackbarContent,
         backgroundColor: kSuccessColor,
       );
     }
@@ -198,9 +231,12 @@ class TaskFormPageState extends State<TaskFormPage> {
   }
 
   Widget build(BuildContext context) {
+    final String title = widget.task != null ? 'Edit Task' : 'New Task';
+
     return Scaffold(
       appBar: MyAppBar(
         context: context,
+        title: Text(title),
         hideSearchBar: true,
         actionButtons: ['notification'],
         elevation: 0,
@@ -214,7 +250,6 @@ class TaskFormPageState extends State<TaskFormPage> {
     );
   }
 
-  /// [Form Builder]
   Widget buildTaskForm() {
     return Form(
       key: formKey,
@@ -289,7 +324,7 @@ class TaskFormPageState extends State<TaskFormPage> {
           return RaisedButton(
             onPressed: () { handleSubmitButton(context, vm); },
             child: Text(
-              'ADD',
+              widget.task == null ? 'ADD' : 'SAVE',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 color: Colors.white,
@@ -303,14 +338,16 @@ class TaskFormPageState extends State<TaskFormPage> {
 
   List<Widget> buildPriorityIcon() {
     return [0, 1, 2, 3].map((index) {
+      var priorityList = TaskPriority.values;
+      var priority = priorityList.elementAt(index).name;
       var color = [kSuccessColor, kInfoColor, kWarningColor, kErrorColor];
 
-      double interpolate = priorityController == index ? 0.5 : 0;
+      double interpolate = priorityController == priority ? 0.5 : 0;
 
       return IconButton(
         onPressed: () {
           setState(() {
-            priorityController = index;
+            priorityController = priority;
           });
         },
         icon: Container(

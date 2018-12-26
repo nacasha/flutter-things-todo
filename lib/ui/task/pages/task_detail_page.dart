@@ -1,6 +1,8 @@
 import 'package:intl/intl.dart';
+import 'package:redux/redux.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:built_collection/built_collection.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'package:thingstodo/theme/colors.dart';
@@ -12,6 +14,7 @@ import 'package:thingstodo/ui/widget/dialog/confirm_dialog.dart';
 import 'package:thingstodo/ui/widget/notifications/show_snack_bar.dart';
 
 import '../task_vm.dart';
+import 'task_form_page.dart';
 
 class TaskDetailPage extends StatefulWidget {
   static final String route = '/task-detail';
@@ -26,6 +29,14 @@ class TaskDetailPage extends StatefulWidget {
 }
 
 class TaskDetailPageState extends State<TaskDetailPage> {
+  @override
+  didChangeDependencies() {
+    super.didChangeDependencies();
+
+    final Store<AppState> store = StoreProvider.of<AppState>(context);
+    final TaskVM vm = TaskVM.fromStore(store);
+  }
+
   onTrashAction(context, task, TaskVM vm) {
     showDialog(
       context: context,
@@ -48,7 +59,14 @@ class TaskDetailPageState extends State<TaskDetailPage> {
   }
 
   onEditAction(context, task, TaskVM vm) {
-
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (BuildContext ctx) => TaskFormPage(
+          previousContext: context,
+          task: task,
+        )
+      )
+    );
   }
 
   onLaterAction(context, task, TaskVM vm) {
@@ -108,15 +126,11 @@ class TaskDetailPageState extends State<TaskDetailPage> {
       ),
       body: Builder(
         builder: (BuildContext context) {
-          return connector(
-            builder: (context, vm) {
-              return Stack(
-                children: <Widget>[
-                  buildDecorationBox(),
-                  buildDetailCard(vm)
-                ],
-              );
-            }
+          return Stack(
+            children: <Widget>[
+              buildDecorationBox(),
+              buildDetailCard()
+            ],
           );
         },
       )
@@ -130,7 +144,7 @@ class TaskDetailPageState extends State<TaskDetailPage> {
     );
   }
 
-  Widget buildDetailCard(TaskVM vm) {
+  Widget buildDetailCard() {
     return Flex(
       direction: Axis.vertical,
       children: <Widget>[
@@ -140,23 +154,33 @@ class TaskDetailPageState extends State<TaskDetailPage> {
           decoration: BoxDecoration(
             color: Colors.white,
           ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              buildTaskBadge(vm),
-              buildTaskDetail(vm)
-            ],
-          ),
+          child: connector(
+            builder: (BuildContext context, TaskVM vm) {
+              final TaskModel task = vm.tasks.firstWhere((task) => (
+                task.taskId == widget.task.taskId
+              ), orElse: () => (
+                widget.task
+              ));
+
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  buildTaskBadge(task),
+                  buildTaskDetail(vm, task)
+                ],
+              );
+            }
+          )
         ),
       ],
     );
   }
 
-  Widget buildTaskBadge(vm) {
+  Widget buildTaskBadge(TaskModel task) {
     Color badgeColor;
     String badgeText;
 
-    switch (widget.task.priority) {
+    switch (task.priority) {
       case TaskPriority.p1:
         badgeColor = kSuccessColor;
         badgeText = 'To do while free';
@@ -198,11 +222,10 @@ class TaskDetailPageState extends State<TaskDetailPage> {
     );
   }
 
-  Widget buildTaskDetail(vm) {
-    final task = widget.task;
+  Widget buildTaskDetail(TaskVM vm, TaskModel task) {
     final title = task.title;
     final description = task.description;
-    final date = DateFormat('d MMM, yyyy | hh:m aa').format(
+    final date = DateFormat('d MMM, yyyy | hh:mm aa').format(
       task.date.toLocal()
     );
     final CategoryModel category = vm.categories.firstWhere((category) => (

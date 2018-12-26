@@ -11,12 +11,12 @@ Things Todo Concept : [Things Todo App](https://www.uplabs.com/posts/freebie-dai
 
 ## Features
 #### Basic
-- [x] Add, Update, Delete Task
-- [x] Add, Update, Delete Category
+- [x] Add, Edit and Delete Task
+- [x] Add, Edit and Delete Category
 - [x] Mark as Done, Later and Important
 - [x] Sort tasks by date time
 
-#### Filter
+#### Filtering
 - [x] Daily Task
 - [x] Weekly Task
 - [ ] Monthly Task

@@ -89,38 +89,6 @@ class SearchBarDelegate extends SearchDelegate<int> {
   }
 }
 
-class _ResultCard extends StatelessWidget {
-  const _ResultCard({this.task, this.title, this.searchDelegate});
-
-  final TaskModel task;
-  final String title;
-  final SearchDelegate<TaskModel> searchDelegate;
-
-  @override
-  Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
-    return GestureDetector(
-      onTap: () {
-        searchDelegate.close(context, task);
-      },
-      child: Card(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            children: <Widget>[
-              Text(title),
-              Text(
-                task.title,
-                style: theme.textTheme.headline.copyWith(fontSize: 72.0),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
 class _SuggestionList extends StatelessWidget {
   const _SuggestionList({this.suggestions, this.query, this.onSelected});
 
