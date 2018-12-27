@@ -37,7 +37,7 @@ class TaskFormPageState extends State<TaskFormPage> {
   DateTime _dateTimeController;
   String priorityController;
 
-  DateFormat _formatDateTime = DateFormat('dd-mm-yyyy | hh:mm aa');
+  DateFormat _formatDateTime = DateFormat('dd-MM-yyyy | hh:mm aa');
 
   @override
   didChangeDependencies() {

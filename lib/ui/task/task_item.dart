@@ -24,14 +24,18 @@ class TaskItem extends StatelessWidget {
 
     switch(direction) {
       case DismissDirection.startToEnd:
-        snackbarContent = Text('Marked as Done');
-        snackbarColor = kSuccessColor;
-        updates = TaskStatus.done;
+        bool isDone = task.status == TaskStatus.done;
+
+        snackbarContent = Text(isDone ? 'Task Active' : 'Marked as Done');
+        snackbarColor = isDone ? Colors.grey.shade700 : kSuccessColor;
+        updates = isDone ? TaskStatus.active : TaskStatus.done;
         break;
       case DismissDirection.endToStart:
-        snackbarContent = Text('Marked as Later');
-        snackbarColor = kErrorColor;
-        updates = TaskStatus.later;
+        bool isLater = task.status == TaskStatus.later;
+
+        snackbarContent = Text(isLater ? 'Task Active' : 'Marked as Later');
+        snackbarColor = isLater ? Colors.grey.shade700 : kErrorColor;
+        updates = isLater ? TaskStatus.active : TaskStatus.later;
         break;
     }
 
@@ -70,22 +74,22 @@ class TaskItem extends StatelessWidget {
       builder: builder
     );
 
-    // Dismissible background
-    final Widget background = (
+    bool isDone = task.status == TaskStatus.done;
+    final Widget doneBackground = (
       DismissibleBackground(
-        text: 'Done',
-        color: kSuccessColor,
-        icon: FontAwesomeIcons.clipboardCheck,
+        text: isDone ? 'Active' : 'Done',
+        color: isDone ? Colors.grey.shade700 : kSuccessColor,
+        icon: isDone ? FontAwesomeIcons.undoAlt : FontAwesomeIcons.clipboardCheck,
         alignment: MainAxisAlignment.start,
       )
     );
 
-    // Dismissible secondary background
-    final Widget secondaryBackground = (
+    bool isLater = task.status == TaskStatus.later;
+    final Widget laterBackground = (
       DismissibleBackground(
-        text: 'Later',
-        color: kErrorColor,
-        icon: FontAwesomeIcons.solidClock,
+        text: isLater ? 'Active' : 'Later',
+        color: isLater ? Colors.grey.shade700 : kErrorColor,
+        icon: isLater ? FontAwesomeIcons.undoAlt : FontAwesomeIcons.solidClock,
         alignment: MainAxisAlignment.end,
       )
     );
@@ -94,8 +98,8 @@ class TaskItem extends StatelessWidget {
       (BuildContext context, TaskVM vm) {
         return Dismissible(
           key: Key(task.taskId),
-          background: background,
-          secondaryBackground: secondaryBackground,
+          background: doneBackground,
+          secondaryBackground: laterBackground,
           onDismissed: (direction) {
             onTaskDismissed(direction, context, vm);
           },

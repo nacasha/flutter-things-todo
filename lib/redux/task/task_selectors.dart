@@ -133,7 +133,7 @@ class TaskSelectors {
     final build = memo2((tasks, date) {
       return tasks.where(
         (task) => _isActive(task) &&
-        (Utils.isSameWeek(task.date.toLocal(), date))
+        Utils.isSameWeek(task.date.toLocal(), date)
       ).toList();
     });
 
@@ -148,7 +148,8 @@ class TaskSelectors {
 
     final build = memo2((tasks, selectedDate) {
       return tasks.where(
-        (task) =>_isActive(task)
+        (task) =>_isActive(task) && 
+        task.date.month == selectedDate.month
       ).toList();
     });
 
