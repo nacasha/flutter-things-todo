@@ -1,3 +1,6 @@
+## 🔥 Not maintained anymore. Some API may different from the latest version.
+## Recommended to find another alternatives example of Flutter Apps.
+
 # Flutter Things Todo
 
 An example Todo App using Flutter with advanced features. :star2:  
@@ -20,14 +23,8 @@ Things Todo Concept : [Things Todo App](https://www.uplabs.com/posts/freebie-dai
 #### Filtering
 - [x] Daily Task
 - [x] Weekly Task
-- [ ] Monthly Task
 - [x] Done, Later and Important Task
 - [x] Search Task
-
-#### Misc
-- [ ] Notifications
-- [ ] Authentication
-- [ ] Settings page
 
 ## Application Architecture
 The architecture is based off these projects:
